@@ -214,214 +214,181 @@ function stncGonulluOl_registration_form_fields()
 
 
 
-<!--begin::Form-->
 
-    <!--begin::Input group-->
-    <div class="form-group row">
-        <!--begin::Label-->
-        <label class="col-lg-2 col-form-label text-lg-right">Upload Files:</label>
-        <!--end::Label-->
 
-        <!--begin::Col-->
-        <div class="col-lg-10">
-            <!--begin::Dropzone-->
-            <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs_example_3">
-                <!--begin::Controls-->
-                <div class="dropzone-panel mb-lg-0 mb-2">
-                    <a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
-                    <a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove All</a>
-                </div>
-                <!--end::Controls-->
+                  <div style="    border: 2px dashed #0087F7;" class="dropzone needsclick dz-clickable">
+                    <div class="dz-message needsclick">
 
-                <!--begin::Items-->
-                <div class="dropzone-items wm-200px">
-                    <div class="dropzone-item" style="display:none">
-                        <!--begin::File-->
-                        <div class="dropzone-file">
-                            <div class="dropzone-filename" title="some_image_file_name.jpg">
-                                <span data-dz-name>some_image_file_name.jpg</span>
-                                <strong>(<span data-dz-size>340kb</span>)</strong>
+
+
+                      <div class="alert alert-warning" role="alert"><button type="button" class="dz-button">
+                          Resimleri sürükle bırak ile bu alana atınız veya dosya/ resim yükleme butonunu kullanınız</button></div>
+
+                      <br>
+                      <div class="alert alert-info" role="alert">
+
+
+
+                        <br>
+                        <strong style="color: brown;">Maksimum video veya resim boyutu {{ fileConfig.uploadSize }} MB olmalıdır</strong>
+
+
+
+                      </div>
+
+
+
+                      <div id="actions" class="row">
+
+                        <div class="col-lg-7">
+                          <!-- The fileinput-button span is used to style the file input field as button -->
+                          <span class=" btn btn-success text-white  fileinput-button">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>Dosya Ekle...</span>
+                          </span>
+
+
+                          <a class="btn btn-primary text-white start">
+                            <svg class="c-icon">
+                              <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-lightbulb"></use>
+                            </svg>&nbsp;Yüklemeyi başlat
+                          </a>
+                          <a class="btn btn-warning   cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>Yüklemeyi İptal Et</span>
+                          </a>
+                        </div>
+
+                        <div class="col-lg-5">
+                          <!-- The global file processing state -->
+                          <span class="fileupload-process">
+                            <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
                             </div>
-
-                            <div class="dropzone-error" data-dz-errormessage></div>
+                          </span>
                         </div>
-                        <!--end::File-->
 
-                        <!--begin::Progress-->
-                        <div class="dropzone-progress">
-                            <div class="progress">
-                                <div
-                                    class="progress-bar bg-primary"
-                                    role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dz-uploadprogress>
-                                </div>
+                        <div class="table-upload table table-striped files" id="previews">
+
+                          <div id="template" class="file-row">
+                            <!-- This is used as the file preview template -->
+                            <div>
+                              <span class="preview"><img data-dz-thumbnail /></span>
                             </div>
-                        </div>
-                        <!--end::Progress-->
+                            <div>
+                              <p class="name" data-dz-name></p>
+                              <strong class="error text-danger" data-dz-errormessage></strong>
+                            </div>
+                            <div>
+                              <p class="size" data-dz-size></p>
+                              <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                              </div>
+                            </div>
+                            <div>
 
-                        <!--begin::Toolbar-->
-                        <div class="dropzone-toolbar">
-                            <span class="dropzone-delete" data-dz-remove><i class="bi bi-x fs-1"></i></span>
+                              <a class="btn btn-primary text-white start">
+                                <svg class="c-icon">
+                                  <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-lightbulb"></use>
+                                </svg>&nbsp; Başlat
+                              </a>
+                              <a data-dz-remove class="btn btn-danger text-white  cancel">
+                                <i class="glyphicon glyphicon-ban-circle"></i>
+                                <span>İptal</span>
+                              </a>
+                              <!-- <a data-dz-remove class="btn btn-danger delete">
+                          <i class="glyphicon glyphicon-trash"></i>
+                          <span>Sil</span>
+                        </a> -->
+                            </div>
+                          </div>
+
                         </div>
-                        <!--end::Toolbar-->
+
+
+                      </div>
                     </div>
-                </div>
-                <!--end::Items-->
-            </div>
-            <!--end::Dropzone-->
+                  </div>
 
-            <!--begin::Hint-->
-            <span class="form-text text-muted">Max file size is 1MB and max number of files is 5.</span>
-            <!--end::Hint-->
-        </div>
-        <!--end::Col-->
-    </div>
-    <!--end::Input group-->
+
 
 
 
                   <script>
-                    //   Dropzone.autoDiscover = false;
+                    Dropzone.autoDiscover = false;
 
-                    //   // Get the template HTML and remove it from the doument
-                    //   var previewNode = document.querySelector("#template");
-                    //   previewNode.id = "";
-                    //   var previewTemplate = previewNode.parentNode.innerHTML;
-                    //   previewNode.parentNode.removeChild(previewNode);
+                    // Get the template HTML and remove it from the doument
+                    var previewNode = document.querySelector("#template");
+                    previewNode.id = "";
+                    var previewTemplate = previewNode.parentNode.innerHTML;
+                    previewNode.parentNode.removeChild(previewNode);
 
-                    //   var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-                    //       url: myAjax.ajaxurl,
+                    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+                      url: myAjax.ajaxurl,
 
-                    //       init: function () {
-                    //           this.on("sending", function (file, xhr, formData) {
-                    //               formData.append("action", "my_user_like");
-                    //               formData.append("nonce", "<?php echo wp_create_nonce("my_user_like_nonce") ?>");
-                    //               console.log(formData)
-                    //           });
+                      init: function() {
+                        this.on("sending", function(file, xhr, formData) {
+                          formData.append("action", "my_user_like");
+                          formData.append("nonce", "<?php echo wp_create_nonce("my_user_like_nonce") ?>");
+                          console.log(formData)
+                        });
 
-                    //       },
-                    //       addRemoveLinks: true,
-                    //       maxFiles:  1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
-                    //      maxFilesize: 10,//max file size in MB,
-                    //       // acceptedFiles:  "{{ fileConfig.fileType }}", 
-                    //       acceptedFiles:  "video/mp4,image/jpeg,image/jpg,image/gif,image/png,video/webm", 
-                    //       thumbnailWidth: 80,
-                    //       thumbnailHeight: 80,
-                    //       parallelUploads: 20,
-                    //       uploadMultiple:false,
+                      },
+                      addRemoveLinks: true,
+                      maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
+                      maxFilesize: 10, //max file size in MB,
 
-                    //       previewTemplate: previewTemplate,
-                    //       autoQueue: false, // Make sure the files aren't queued until manually added
-                    //       // autoProcessQueue: false,
-                    //       previewsContainer: "#previews", // Define the container to display the previews
-                    //       clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-                    //   });
+                      // acceptedFiles:  "{{ fileConfig.fileType }}", 
+                      acceptedFiles: "video/mp4,image/jpeg,image/jpg,image/gif,image/png,video/webm",
+                      thumbnailWidth: 80,
+                      thumbnailHeight: 80,
+                      parallelUploads: 1,
+                      previewTemplate: previewTemplate,
+                      autoQueue: false, // Make sure the files aren't queued until manually added
+                      previewsContainer: "#previews", // Define the container to display the previews
+                      clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+                    });
 
-                    //   myDropzone.on("addedfile", function (file) {
-                    //       // Hookup the start button
+                    myDropzone.on("addedfile", function(file) {
+                      // Hookup the start button
 
-                    //       file.previewElement.querySelector(".start").onclick = function () {
-                    //           myDropzone.enqueueFile(file);
-                    //       };
-                    //   });
+                      file.previewElement.querySelector(".start").onclick = function() {
+                        myDropzone.enqueueFile(file);
+                      };
+                    });
 
 
-                    //   // Update the total progress bar
-                    //   myDropzone.on("totaluploadprogress", function (progress) {
-                    //       document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
-                    //   });
+                    // Update the total progress bar
+                    myDropzone.on("totaluploadprogress", function(progress) {
+                      document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+                    });
 
-                    //   myDropzone.on("sending", function (file) {
-                    //       // Show the total progress bar when upload starts
-                    //       document.querySelector("#total-progress").style.opacity = "1";
-                    //       // And disable the start button
-                    //       file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
-                    //   });
+                    myDropzone.on("sending", function(file) {
+                      // Show the total progress bar when upload starts
+                      document.querySelector("#total-progress").style.opacity = "1";
+                      // And disable the start button
+                      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+                    });
 
-                    //   // Hide the total progress bar when nothing's uploading anymore
-                    //   myDropzone.on("queuecomplete", function (progress) {
-                    //       document.querySelector("#total-progress").style.opacity = "0";
-                    //   });
+                    // Hide the total progress bar when nothing's uploading anymore
+                    myDropzone.on("queuecomplete", function(progress) {
+                      document.querySelector("#total-progress").style.opacity = "0";
+                    });
 
-                    //   // Setup the buttons for all transfers
-                    //   // The "add files" button doesn't need to be setup because the config
-                    //   // `clickable` has already been specified.
-                    //   document.querySelector("#actions .start").onclick = function () {
-                    //       myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-                    //   };
-                    //   document.querySelector("#actions .cancel").onclick = function () {
-                    //       //alert("ipral")
-                    //       myDropzone.removeAllFiles(true);
-                    //   };
-                    //   //TODO: jquery document ile yapılması gerekiyor 
-                    // //  document.querySelector("#previews .delete").onclick = function () {
-                    // //      myDropzone.removeAllFiles(true);
-                    // //  };
-
-
-// set the dropzone container id
-const id = "#kt_dropzonejs_example_3";
-const dropzone = document.querySelector(id);
-
-// set the preview element template
-var previewNode = dropzone.querySelector(".dropzone-item");
-previewNode.id = "";
-var previewTemplate = previewNode.parentNode.innerHTML;
-previewNode.parentNode.removeChild(previewNode);
-
-var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
-            url: myAjax.ajaxurl,
-
-                          init: function () {
-                              this.on("sending", function (file, xhr, formData) {
-                                  formData.append("action", "my_user_like");
-                                  formData.append("nonce", "<?php echo wp_create_nonce("my_user_like_nonce") ?>");
-                                  console.log(formData)
-                              });
-
-                          },
-    parallelUploads: 1,
-    maxFilesize: 1, // Max filesize in MB
-    previewTemplate: previewTemplate,
-    autoQueue: false, // Make sure the files aren't queued until manually added
-    previewsContainer: id + " .dropzone-items", // Define the container to display the previews
-    clickable: id + " .dropzone-select" // Define the element that should be used as click trigger to select files.
-});
-
-myDropzone.on("addedfile", function (file) {
-    // Hookup the start button
-    const dropzoneItems = dropzone.querySelectorAll('.dropzone-item');
-    dropzoneItems.forEach(dropzoneItem => {
-        dropzoneItem.style.display = '';
-    });
-});
-
-// Update the total progress bar
-myDropzone.on("totaluploadprogress", function (progress) {
-    const progressBars = dropzone.querySelectorAll('.progress-bar');
-    progressBars.forEach(progressBar => {
-        progressBar.style.width = progress + "%";
-    });
-});
-
-myDropzone.on("sending", function (file) {
-    // Show the total progress bar when upload starts
-    const progressBars = dropzone.querySelectorAll('.progress-bar');
-    progressBars.forEach(progressBar => {
-        progressBar.style.opacity = "1";
-    });
-});
-
-// Hide the total progress bar when nothing"s uploading anymore
-myDropzone.on("complete", function (progress) {
-    const progressBars = dropzone.querySelectorAll('.dz-complete');
-
-    setTimeout(function () {
-        progressBars.forEach(progressBar => {
-            progressBar.querySelector('.progress-bar').style.opacity = "0";
-            progressBar.querySelector('.progress').style.opacity = "0";
-        });
-    }, 300);
-});
+                    // Setup the buttons for all transfers
+                    // The "add files" button doesn't need to be setup because the config
+                    // `clickable` has already been specified.
+                    document.querySelector("#actions .start").onclick = function() {
+                      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+                    };
+                    document.querySelector("#actions .cancel").onclick = function() {
+                      //alert("ipral")
+                      myDropzone.removeAllFiles(true);
+                    };
+                    //TODO: jquery document ile yapılması gerekiyor 
+                    //  document.querySelector("#previews .delete").onclick = function () {
+                    //      myDropzone.removeAllFiles(true);
+                    //  };
                   </script>
 
 
