@@ -1,71 +1,40 @@
 <?php
-
-//https://wordpress.stackexchange.com/questions/56805/saving-frontend-form-data-in-wordpress
-
-//https://wpshout.com/wordpress-submit-posts-from-frontend/
-
-function objectToArray($d) {
-    if (is_object($d)) {
-        // Gets the properties of the given object
-        // with get_object_vars function
-        $d = get_object_vars($d);
-    }
-
-    if (is_array($d)) {
-        /*
-        * Return array converted to object
-        * Using __FUNCTION__ (Magic constant)
-        * for recursive call
-        */
-        return array_map(__FUNCTION__, $d);
-    } else {
-        // Return array
-        return $d;
-    }
-}
-/*************************** LOAD THE BASE CLASS *******************************
- *******************************************************************************
- * The WP_List_Table class isn't automatically available to plugins, so we need
- * to check if it's available and load it if necessary. In this tutorial, we are
- * going to use the WP_List_Table class directly from WordPress core.
- *
- * IMPORTANT:
- * Please note that the WP_List_Table class technically isn't an official API,
- * and it could change at some point in the distant future. Should that happen,
- * I will update this plugin with the most current techniques for your reference
- * immediately.
- *
- * If you are really worried about future compatibility, you can make a copy of
- * the WP_List_Table class (file path is shown just below) to use and distribute
- * with your plugins. If you do that, just remember to change the name of the
- * class to avoid conflicts with core.
- *
- * Since I will be keeping this tutorial up-to-date for the foreseeable future,
- * I am going to work with the copy of the class provided in WordPress core.
- */
-if(!class_exists('WP_List_Table')){
-    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-}
-
-
-
-
-/************************** CREATE A PACKAGE CLASS *****************************
- *******************************************************************************
- * Create a new list table package that extends the core WP_List_Table class.
- * WP_List_Table contains most of the framework for generating the table, but we
- * need to define and override some methods so that our data can be displayed
- * exactly the way we need it to be.
- * 
- * To display this example on a page, you will first need to instantiate the class,
- * then call $yourInstance->prepare_items() to handle any data manipulation, then
- * finally call $yourInstance->display() to render the table to the page.
- * 
- * Our theme for this list table is going to be movies.
- */
-class TT_Example_List_Table extends WP_List_Table {
-   
 /**
+ * Plugin Name:     draflist   Admin Table Tutorial
+ * Plugin URI:       https://github.com/gvgvgvijayan/admin-table-tut/blob/main/admin-table-tut.php
+ * Description:       This plugin is created for the purpose to understand the WordPress admin table.
+ * Author:            Vijayan
+ * Author URI:        www.vijayan.in
+ * Text Domain:       admin-table-tut
+ * Domain Path:       /languages
+ * Version:           0.1.0
+ * Requires at least: 5.4
+ * Requires PHP:      7.2
+ *
+ * @package         Admin_Table_Tut
+ */
+
+namespace Vijayan;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Adding WP List table class if it's not available.
+ */
+if ( ! class_exists( \WP_List_Table::class ) ) {
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+}
+
+/**
+ * Class Drafts_List_Table.
+ *
+ * @since 0.1.0
+ * @package Admin_Table_Tut
+ * @see WP_List_Table
+ */
+class Drafts_List_Table extends \WP_List_Table {
+
+	/**
 	 * Const to declare number of posts to show per page in the table.
 	 */
 	const POSTS_PER_PAGE = 10;
@@ -323,8 +292,8 @@ class TT_Example_List_Table extends WP_List_Table {
 		}
 
 		$this->items = $data;
-//         echo "<pre>";
-// print_r( $data);
+        echo "<pre>";
+print_r( $data);
 		$this->set_pagination_args(
 			array(
 				'total_items' => $get_posts_obj->found_posts,
@@ -473,64 +442,60 @@ class TT_Example_List_Table extends WP_List_Table {
 			'author' => array( 'author', false ),
 		);
 	}
-
 }
 
-
-
-
-
-/** ************************ REGISTER THE TEST PAGE ****************************
- *******************************************************************************
- * Now we just need to define an admin page. For this example, we'll add a top-level
- * menu item to the bottom of the admin menus.
+/**
+ * Fires in head section of admin page
  */
+add_action(
+	'admin_head',
+	function() : void {
+		$page = esc_attr( filter_input( INPUT_GET, 'page' ) );
+		if ( 'all-drafts' !== $page ) {
+			return;
+		}
 
+		echo '<style type="text/css">';
+		echo '.wp-list-table .column-type { width: 10%; }';
+		echo '</style>';
+	}
+);
 
-
-
-
-
-/** *************************** RENDER TEST PAGE ********************************
- *******************************************************************************
- * This function renders the admin page and the example list table. Although it's
- * possible to call prepare_items() and display() from the constructor, there
- * are often times where you may need to include logic here between those steps,
- * so we've instead called those methods explicitly. It keeps things flexible, and
- * it's the way the list tables are used in the WordPress core.
+/**
+ * Fires before the administration menu loads in the admin.
  */
-function tt_render_list_page(){
-    
-    //Create an instance of our package class...
-    $testListTable = new TT_Example_List_Table();
-    //Fetch, prepare, sort, and filter our data...
-    $testListTable->prepare_items();
-    
-    ?>
-    <div class="wrap">
-        
-        <div id="icon-users" class="icon32"><br/></div>
-        <h2>List Table Test</h2>
-        
-        <div style="background:#ECECEC;border:1px solid #CCC;padding:0 10px;margin-top:5px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-            <p>This page demonstrates the use of the <tt><a href="http://codex.wordpress.org/Class_Reference/WP_List_Table" target="_blank" style="text-decoration:none;">WP_List_Table</a></tt> class in plugins.</p> 
-            <p>For a detailed explanation of using the <tt><a href="http://codex.wordpress.org/Class_Reference/WP_List_Table" target="_blank" style="text-decoration:none;">WP_List_Table</a></tt>
-            class in your own plugins, you can view this file <a href="<?php echo admin_url( 'plugin-editor.php?plugin='.plugin_basename(__FILE__) ); ?>" style="text-decoration:none;">in the Plugin Editor</a> or simply open <tt style="color:gray;"><?php echo __FILE__ ?></tt> in the PHP editor of your choice.</p>
-            <p>Additional class details are available on the <a href="http://codex.wordpress.org/Class_Reference/WP_List_Table" target="_blank" style="text-decoration:none;">WordPress Codex</a>.</p>
-        </div>
-        
-        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
-        <form id="movies-filter" method="get">
-            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-            <!-- Now we can render the completed list table -->
-            <?php $testListTable->display() ?>
-        </form>
-        
-    </div>
-    <?php
+add_action(
+	'admin_menu',
+	function() : void {
+		add_menu_page(
+			'All Drafts',
+			'All Drafts',
+			'manage_options',
+			'all-drafts',
+			__NAMESPACE__ . '\bootload_drafts_table',
+			'dashicons-edit-page',
+			100
+		);
+	}
+);
+
+/**
+ * This function is responsible for render the drafts table
+ */
+function bootload_drafts_table() : void {
+	$drafts_table = new Drafts_List_Table();
+	?>
+	<div class="wrap">
+		<h2><?php esc_html_e( 'All Drafts List', 'admin-table-tut' ); ?></h2>
+		<form id="all-drafts" method="get">
+			<input type="hidden" name="page" value="all-drafts" />
+
+			<?php
+			$drafts_table->prepare_items();
+			$drafts_table->search_box( 'Search', 'search' );
+			$drafts_table->display();
+			?>
+		</form>
+	</div>
+	<?php
 }
-
-
-
-//  include ("olanLlisteleme.php");

@@ -20,7 +20,7 @@ add_action('init', 'script_enqueuer');
 //--------------
 // define the actions for the two hooks created, first for logged in users and the next for logged out users
 add_action("wp_ajax_my_user_like", "my_user_like");
-add_action("wp_ajax_nopriv_my_user_like", "please_login");
+add_action("wp_ajax_nopriv_my_user_like", "my_user_like");
 
 // define the function to be fired for logged in users
 function my_user_like()
@@ -37,7 +37,7 @@ function my_user_like()
     wp_die(esc_html__('Please choose a file', 'theme-text-domain'));
   }
 
-  $allowed_extensions = array('jpg', 'jpeg', 'png','mp4');
+  $allowed_extensions = array('jpg', 'jpeg', 'png', 'mp4');
   $file_type = wp_check_filetype($_FILES['file']['name']);
   $file_extension = $file_type['ext'];
 
@@ -47,7 +47,7 @@ function my_user_like()
   }
 
   $file_size = $_FILES['file']['size'];
-  $allowed_file_size = 512000*50; // Here we are setting the file size limit to 500 KB = 500 × 1024
+  $allowed_file_size = 512000 * 50; // Here we are setting the file size limit to 500 KB = 500 × 1024
 
   // Check for file size limit
   if ($file_size >= $allowed_file_size) {
@@ -202,13 +202,13 @@ function stncGonulluOl_registration_form_fields()
 
                   <div class="checkbox">
                     <label>
-                      <input name="travelBan[]" value="kampa" type="checkbox"> <?php _e('evet var'); ?>
+                      <input name="travelBan" value="seyahatEngeliVar" type="radio"> <?php _e('evet var'); ?>
                     </label>
                   </div>
 
                   <div class="checkbox">
                     <label>
-                      <input name="travelBan[]" value="bros" type="checkbox"> <?php _e('hayır yok'); ?>
+                      <input name="travelBan" value="seyahatEngeliYok" type="radio"> <?php _e('hayır yok'); ?>
                     </label>
                   </div>
 
@@ -333,6 +333,13 @@ function stncGonulluOl_registration_form_fields()
                           console.log(formData)
                         });
 
+                      },
+                      success: function(file, response) {
+                        alert (response);
+                        setTimeout(function() {
+                          // $('#insert_pic_div').hide();
+                          // $('#startEditingDiv').show();
+                        }, 2000);
                       },
                       addRemoveLinks: true,
                       maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
@@ -499,3 +506,5 @@ function stncGonulluOl_add_new_member()
   }
 }
 add_action('init', 'stncGonulluOl_add_new_member');
+
+
