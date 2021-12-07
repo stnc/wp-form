@@ -132,54 +132,6 @@ class TT_Example_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Return instances post object.
-	 *
-	 * @return WP_Query Custom query object with passed arguments.
-	 */
-	protected function get_posts_object() {
-		$post_types = $this->allowed_post_types;
-
-		$post_args = array(
-			'post_type'      => $post_types,
-			'post_status'    => array( 'draft' ),
-			'posts_per_page' => self::POSTS_PER_PAGE,
-		);
-
-		$paged = filter_input( INPUT_GET, 'paged', FILTER_VALIDATE_INT );
-
-		if ( $paged ) {
-			$post_args['paged'] = $paged;
-		}
-
-		$post_type = filter_input( INPUT_GET, 'type', FILTER_SANITIZE_STRING );
-
-		if ( $post_type ) {
-			$post_args['post_type'] = $post_type;
-		}
-
-		$orderby = sanitize_sql_orderby( filter_input( INPUT_GET, 'orderby' ) );
-		$order   = esc_sql( filter_input( INPUT_GET, 'order' ) );
-
-		if ( empty( $orderby ) ) {
-			$orderby = 'date';
-		}
-
-		if ( empty( $order ) ) {
-			$order = 'DESC';
-		}
-
-		$post_args['orderby'] = $orderby;
-		$post_args['order']   = $order;
-
-		$search = esc_sql( filter_input( INPUT_GET, 's' ) );
-		if ( ! empty( $search ) ) {
-			$post_args['s'] = $search;
-		}
-
-		return new \WP_Query( $post_args );
-	}
-
-	/**
 	 * Display text for when there are no items.
 	 */
 	public function no_items() {
@@ -196,7 +148,7 @@ class TT_Example_List_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		$result = '';
 		switch ( $column_name ) {
-			case 'date':
+			case 'add_date':
 				$t_time    = get_the_time( 'Y/m/d g:i:s a', $item['id'] );
 				$time      = get_post_timestamp( $item['id'] );
 				$time_diff = time() - $time;
@@ -211,13 +163,17 @@ class TT_Example_List_Table extends WP_List_Table {
 				$result = '<span title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $item['id'], 'date', 'list' ) . '</span>';
 				break;
 
-			case 'author':
-				$result = $item['author'];
+			case 'namelastname':
+				$result = $item['namelastname'];
 				break;
 
-			case 'type':
-				$result = $item['type'];
+			case 'company_name':
+				$result = $item['company_name'];
 				break;
+
+                case 'phone':
+                    $result = $item['phone'];
+                    break;
 		}
 
 		return $result;
@@ -231,48 +187,42 @@ class TT_Example_List_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'     => '<input type="checkbox"/>',
-			'title'  => __( 'Title', 'admin-table-tut' ),
-			'type'   => __( 'Type', 'admin-table-tut' ),
-			'author' => __( 'Author', 'admin-table-tut' ),
-			'date'   => __( 'Date', 'admin-table-tut' ),
+			'namelastname'  => __( 'Name', 'admin-table-tut' ),
+			'company_name'   => __( 'Company', 'admin-table-tut' ),
+			'phone' => __( 'Phone', 'admin-table-tut' ),
+			'add_date'   => __( 'Date', 'admin-table-tut' ),
 		);
 	}
 
-	/**
-	 * Return title column.
-	 *
-	 * @param  array $item Item data.
-	 * @return string
-	 */
-	public function column_title( $item ) {
-		$edit_url    = get_edit_post_link( $item['id'] );
-		$post_link   = get_permalink( $item['id'] );
-		$delete_link = get_delete_post_link( $item['id'] );
+    /** ************************************************************************
+     * Recommended. This is a custom column method and is responsible for what
+     * is rendered in any column with a name/slug of 'title'. Every time the class
+     * needs to render a column, it first looks for a method named 
+     * column_{$column_title} - if it exists, that method is run. If it doesn't  //burası öenmli funksiyon adı column_{$column_title} boyle olacak 
+     * exist, column_default() is called instead.
+     * 
+     * This example also illustrates how to implement rollover actions. Actions
+     * should be an associative array formatted as 'slug'=>'link html' - and you
+     * will need to generate the URLs yourself. You could even ensure the links
+     * 
+     * 
+     * @see WP_List_Table::::single_row_columns()
+     * @param array $item A singular item (one full row's worth of data)
+     * @return string Text to be placed inside the column <td> (movie title only)
+     **************************************************************************/
+    function column_namelastname($item){
+        $delete_nonce = wp_create_nonce( 'sp_delete_customer' );
 
-		$output = '<strong>';
+		$title = '<strong>' . $item['namelastname'] . '</strong>';
 
-		/* translators: %s: Post Title */
-		$output .= '<a class="row-title" href="' . esc_url( $edit_url ) . '" aria-label="' . sprintf( __( '%s (Edit)', 'admin-table-tut' ), $item['title'] ) . '">' . esc_html( $item['title'] ) . '</a>';
-		$output .= _post_states( get_post( $item['id'] ), false );
-		$output .= '</strong>';
+		$actions = [
+			'edşt' => sprintf( '<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">edıt</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['id'] ), $delete_nonce ),
+			'delete' => sprintf( '<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">Delete</a>', esc_attr( $_REQUEST['page'] ), 'delete', absint( $item['id'] ), $delete_nonce )
+		];
 
-		// Get actions.
-		$actions = array(
-			'edit'  => '<a href="' . esc_url( $edit_url ) . '">' . __( 'Edit', 'admin-table-tut' ) . '</a>',
-			'trash' => '<a href="' . esc_url( $delete_link ) . '" class="submitdelete">' . __( 'Trash', 'admin-table-tut' ) . '</a>',
-			'view'  => '<a href="' . esc_url( $post_link ) . '">' . __( 'View', 'admin-table-tut' ) . '</a>',
-		);
+		return $title . $this->row_actions( $actions );
+    }
 
-		$row_actions = array();
-
-		foreach ( $actions as $action => $link ) {
-			$row_actions[] = '<span class="' . esc_attr( $action ) . '">' . $link . '</span>';
-		}
-
-		$output .= '<div class="row-actions">' . implode( ' | ', $row_actions ) . '</div>';
-
-		return $output;
-	}
 
 	/**
 	 * Column cb.
@@ -303,36 +253,62 @@ class TT_Example_List_Table extends WP_List_Table {
 
 		$this->process_bulk_action();
 
-		$get_posts_obj = $this->get_posts_object();
+		$per_page     = $this->get_items_per_page( 'customers_per_page', 5 );
+		$current_page = $this->get_pagenum();
+		$total_items  = self::record_count();
 
-		if ( $get_posts_obj->have_posts() ) {
+			$this->set_pagination_args( [
+			'total_items' => $total_items, //WE have to calculate the total number of items
+			'per_page'    => $per_page //WE have to determine how many items to show on a page
+		] );
 
-			while ( $get_posts_obj->have_posts() ) {
 
-				$get_posts_obj->the_post();
+        $this->items = self::get_customers( $per_page, $current_page );
 
-				$data[ get_the_ID() ] = array(
-					'id'     => get_the_ID(),
-					'title'  => get_the_title(),
-					'type'   => ucwords( get_post_type_object( get_post_type() )->labels->singular_name ),
-					'date'   => get_post_datetime(),
-					'author' => get_the_author(),
-				);
-			}
-			wp_reset_postdata();
+	}
+
+	/**
+	 * Retrieve customers data from the database
+	 *
+	 * @param int $per_page
+	 * @param int $page_number
+	 *
+	 * @return mixed
+	 */
+	public static function get_customers( $per_page = 5, $page_number = 1 ) {
+
+		global $wpdb;
+
+		$sql = "SELECT * FROM {$wpdb->prefix}stnc_teknoparkform";
+
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
+			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
+			$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
 		}
 
-		$this->items = $data;
-//         echo "<pre>";
-// print_r( $data);
-		$this->set_pagination_args(
-			array(
-				'total_items' => $get_posts_obj->found_posts,
-				'per_page'    => $get_posts_obj->post_count,
-				'total_pages' => $get_posts_obj->max_num_pages,
-			)
-		);
+		$sql .= " LIMIT $per_page";
+		$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+
+
+		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+		return $result;
 	}
+
+
+    	/**
+	 * Returns the count of records in the database.
+	 *
+	 * @return null|string
+	 */
+	public static function record_count() {
+		global $wpdb;
+
+		$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}stnc_teknoparkform";
+
+		return $wpdb->get_var( $sql );
+	}
+
 
 	/**
 	 * Get bulk actions.
@@ -467,10 +443,10 @@ class TT_Example_List_Table extends WP_List_Table {
 	public function get_sortable_columns() {
 
 		return array(
-			'title'  => array( 'title', false ),
-			'type'   => array( 'type', false ),
-			'date'   => array( 'date', false ),
-			'author' => array( 'author', false ),
+			'namelastname'  => array( 'namelastname', false ),
+			'company_name'   => array( 'company_name', false ),
+			'phone'   => array( 'phone', false ),
+			'add_date' => array( 'add_date', false ),
 		);
 	}
 
@@ -524,7 +500,10 @@ function tt_render_list_page(){
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-            <?php $testListTable->display() ?>
+            <?php 
+            
+            $testListTable->search_box( 'search', 'search_id' );
+            $testListTable->display() ?>
         </form>
         
     </div>

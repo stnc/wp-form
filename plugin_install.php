@@ -23,7 +23,7 @@ function stncCatQuiz_install()
       
          $sql = "CREATE TABLE IF NOT EXISTS $tableNameMain (
             id INT NOT NULL AUTO_INCREMENT,
-            name_lastname varchar(255) DEFAULT NULL,
+            namelastname varchar(255) DEFAULT NULL,
             company_name varchar(255) DEFAULT NULL,
             phone varchar(255) DEFAULT NULL,
             mail_adress varchar(255) DEFAULT NULL,
