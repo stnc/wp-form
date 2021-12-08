@@ -1,24 +1,4 @@
 <?php
-//https://www.inmotionhosting.com/support/edu/wordpress/save-wordpress-plugin-settings-with-form/
-/*  ///OLD Sinlge menu 
-function my_admin_menu()
-{
-    add_menu_page(
-
-        __('Sample page', 'my-textdomain'),
-
-        __('Sample menu', 'my-textdomain'),
-        'manage_options',
-        'sample-page',
-        'my_admin_page_contents',
-        'dashicons-schedule',
-        3
-    );
-}
-
-add_action('admin_menu', 'my_admin_menu');
-
-*/
 
 
 
@@ -64,6 +44,4 @@ function load_my_plugin_scripts($hook)
 
 add_action('admin_enqueue_scripts', 'load_my_plugin_scripts');
 
-
-//https://wordpress.stackexchange.com/questions/342433/error-options-page-not-found-saving-settings-page-with-tabs
 

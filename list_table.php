@@ -587,5 +587,4 @@ function tt_render_list_page()
 
 
 
-//  include ("olanLlisteleme.php");
-include("webkul_example.php");
+

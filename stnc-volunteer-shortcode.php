@@ -3,20 +3,7 @@
 // Fires after WordPress has finished loading, but before any headers are sent.
 
 
-function script_enqueuer()
-{
 
-  // Register the JS file with a unique handle, file location, and an array of dependencies
-  wp_register_script("liker_script", plugin_dir_url(__FILE__) . 'liker_script.js', array('jquery'));
-
-  // localize the script to your domain name, so that you can reference the url to admin-ajax.php file easily
-  wp_localize_script('liker_script', 'myAjax', array('ajaxurl' => admin_url('admin-ajax.php')));
-
-  // enqueue jQuery library and the script you registered above
-  wp_enqueue_script('jquery');
-  wp_enqueue_script('liker_script');
-}
-add_action('init', 'script_enqueuer');
 //--------------
 // define the actions for the two hooks created, first for logged in users and the next for logged out users
 add_action("wp_ajax_my_user_like", "my_user_like");
@@ -153,10 +140,7 @@ function stncGonulluOl_registration_form_fields()
     stncGonulluOl_show_error_messages(); ?>
 
 
-    <script src="https://kysmerkez.kurbandefteri.com/assets/admin/stnc-upload/js/dropzone.min.js"></script>
-    <script src="https://kysmerkez.kurbandefteri.com/assets/admin/stnc-upload/js/dropzone.dict-tr.js"></script>
-    <link rel="stylesheet" href="https://kysmerkez.kurbandefteri.com/assets/admin/stnc-upload/css/dropzone.min.css" type="text/css" />
-    <link rel="stylesheet" href="https://kysmerkez.kurbandefteri.com/assets/admin/css/bootstrap.min.css" type="text/css" />
+
 
     <div class="container">
       <div class="row">
