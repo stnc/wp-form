@@ -31,7 +31,7 @@ function stncCatQuiz_install()
             comment TEXT DEFAULT NULL,
             travel_ban varchar(255) DEFAULT NULL,
             user_ip varchar(255) DEFAULT NULL,
-            media_id varchar(255) DEFAULT NULL,
+            media_id INT DEFAULT NULL,
             add_date DATETIME NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
