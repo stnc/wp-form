@@ -84,36 +84,36 @@ function please_login()
 
 
 // user registration login form
-function stncGonulluOl_registration_form()
+function stncForm_registration_form()
 {
 
   // only show the registration form to non-logged-in members
 
 
-  global $stncGonulluOl_load_css;
+  global $stncForm_load_css;
 
   // set this to true so the CSS is loaded
-  $stncGonulluOl_load_css = true;
+  $stncForm_load_css = true;
   /*
 		// check to make sure user registration is enabled
 		$registration_enabled = get_option('users_can_register');
 	
 		// only show the registration form if allowed
 		if($registration_enabled) {
-			$output = stncGonulluOl_registration_form_fields();
+			$output = stncForm_registration_form_fields();
 		} else {
 			$output = __('User registration is not enabled');
 		}
 */
-  $output = stncGonulluOl_registration_form_fields();
+  $output = stncForm_registration_form_fields();
   return $output;
 }
-add_shortcode('stncGonulluOl_RegisterForm', 'stncGonulluOl_registration_form');
-// [stncGonulluOl_RegisterForm] --- kullanım örneği
+add_shortcode('stncForm_RegisterForm', 'stncForm_registration_form');
+// [stncForm_RegisterForm] --- kullanım örneği
 
 
 // registration form fields
-function stncGonulluOl_registration_form_fields()
+function stncForm_registration_form_fields()
 {
   ob_start();
 
@@ -144,13 +144,13 @@ function stncGonulluOl_registration_form_fields()
   if (isset($_GET['successMsg'])) {
 ?>
 
-    <h3 class="stncGonulluOl_header"><?php _e('Teşekkürler'); ?></h3>
+    <h3 class="stncForm_header"><?php _e('Teşekkürler'); ?></h3>
 
   <?php  } else {
   ?>
     <?php
     // show any error messages after form submission
-    stncGonulluOl_show_error_messages(); ?>
+    stncForm_show_error_messages(); ?>
 
 
     <script src="https://kysmerkez.kurbandefteri.com/assets/admin/stnc-upload/js/dropzone.min.js"></script>
@@ -166,7 +166,7 @@ function stncGonulluOl_registration_form_fields()
               <!-- /.box-header -->
               <!-- form start -->
 
-              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncGonulluOl_registration_form" class="stncGonulluOl_form">
+              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_registration_form" class="stncForm_form">
                 <div class="box-body">
 
                   <div class="form-group">
@@ -425,10 +425,10 @@ myDropzone.on("complete", function (progress) {
                 <!-- /.box-body -->
 
                 <div class="box-footer">
-                  <input type="hidden" name="stncGonulluOl_register_nonce" value="<?php echo wp_create_nonce('stncGonulluOl-register-nonce'); ?>" />
+                  <input type="hidden" name="stncForm_register_nonce" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <?php // wp_nonce_field( 'upload_wpcfu_file', 'wpcfu_nonce', true, false ); 
                   ?>
-                  <input type="hidden" name="stncGonulluOl_user_login" value="<?php echo wp_create_nonce('stncGonulluOl-register-nonce'); ?>" />
+                  <input type="hidden" name="stncForm_user_login" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <button type="submit" class="btn btn-primary"><?php _e('Gönder'); ?></button>
                 </div>
               </form>
@@ -453,12 +453,12 @@ myDropzone.on("complete", function (progress) {
 
 
 // register a new user
-function stncGonulluOl_add_new_member()
+function stncForm_add_new_member()
 {
 
   global $wpdb;
 
-  if (isset($_POST["stncGonulluOl_user_login"]) && wp_verify_nonce($_POST['stncGonulluOl_register_nonce'], 'stncGonulluOl-register-nonce')) {
+  if (isset($_POST["stncForm_user_login"]) && wp_verify_nonce($_POST['stncForm_register_nonce'], 'stncForm-register-nonce')) {
     $nameLastname        =  sanitize_text_field($_POST["nameLastname"]);
     $companyName    = sanitize_text_field($_POST["companyName"]);
     $phone     = sanitize_text_field($_POST["phone"]);
@@ -475,16 +475,16 @@ function stncGonulluOl_add_new_member()
 
     if (empty($nameLastname)) {
       // passwords do not match
-      stncGonulluOl_errors()->add('empty', __('Lütfen adınızı giriniz'));
+      stncForm_errors()->add('empty', __('Lütfen adınızı giriniz'));
     }
 
 
     if (!is_email($mailAdress)) {
-      stncGonulluOl_errors()->add('invalidMail', __('Lütfen doğru bir mail adresi giriniz'));
+      stncForm_errors()->add('invalidMail', __('Lütfen doğru bir mail adresi giriniz'));
     }
 
 
-    $errors = stncGonulluOl_errors()->get_error_messages();
+    $errors = stncForm_errors()->get_error_messages();
 
 
 
@@ -525,4 +525,4 @@ function stncGonulluOl_add_new_member()
     }
   }
 }
-add_action('init', 'stncGonulluOl_add_new_member');
+add_action('init', 'stncForm_add_new_member');

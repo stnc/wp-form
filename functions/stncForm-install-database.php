@@ -1,13 +1,6 @@
 <?php
-// function stncForm_load_textdomain()
-// {
-//     load_plugin_textdomain('stnc', false, dirname(plugin_basename(__FILE__)) . '/i18n/languages/');
-// }
-
-// add_action('plugins_loaded', 'stncForm_load_textdomain');
-
+//TODO: bu kısımları eklenti yuknince gelen yukleme modullerı seklınde yapabiliriz 
 $stncForm_tableNameMain = 'stnc_teknoparkform';
-
 function stncForm_install()
 {
     global $wpdb;
@@ -27,13 +20,15 @@ function stncForm_install()
             add_date DATETIME NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
-    require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
+    // echo $wpdb->last_error;
+
 }
 
 register_activation_hook(__FILE__, 'stncForm_install');
 
-add_action('admin_init', 'stncForm_install'); 
+add_action('admin_init', 'stncForm_install');
 
 function stncForm_remove_database()
 {
@@ -44,12 +39,18 @@ function stncForm_remove_database()
     $sql = "DROP TABLE IF EXISTS " . $wpdb->prefix . $stncForm_tableNameMain . "";
     $wpdb->query($sql);
     //  delete_option("my_plugin_db_version");
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
 }
 
 register_uninstall_hook(__FILE__, 'stncForm_remove_database');
-register_deactivation_hook( __FILE__, 'stncForm_remove_database' );
+register_deactivation_hook(__FILE__, 'stncForm_remove_database');
 
+// function stncForm_load_textdomain()
+// {
+//     load_plugin_textdomain('stnc', false, dirname(plugin_basename(__FILE__)) . '/i18n/languages/');
+// }
 
+// add_action('plugins_loaded', 'stncForm_load_textdomain');
 
 // add_action('admin_init','stncForm_remove_database');
-

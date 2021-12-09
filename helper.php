@@ -7,19 +7,19 @@ if (!defined('ABSPATH')) {
 
 
 // used for tracking error messages
-function stncGonulluOl_errors(){
+function stncForm_errors(){
     static $wp_error; // Will hold global variable safely
     return isset($wp_error) ? $wp_error : ($wp_error = new WP_Error(null, null, null));
 }
 
 
 // displays error messages from form submissions
-function stncGonulluOl_show_error_messages() {
-	if($codes = stncGonulluOl_errors()->get_error_codes()) {
-		echo '<div class="stncGonulluOl_errors">';
+function stncForm_show_error_messages() {
+	if($codes = stncForm_errors()->get_error_codes()) {
+		echo '<div class="stncForm_errors">';
 		    // Loop error codes and display errors
 		   foreach($codes as $code){
-		        $message = stncGonulluOl_errors()->get_error_message($code);
+		        $message = stncForm_errors()->get_error_message($code);
 		        echo '<span class="error"><strong>' . __('Hata') . '</strong>: ' . $message . '</span><br/>';
 		    }
 		echo '</div>';

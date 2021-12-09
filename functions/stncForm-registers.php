@@ -20,7 +20,11 @@ function stncForm_register_js() {
 
 add_action('init', 'stncForm_register_js');
 
-
+// load css into the website's front-end
+function stncForm_enqueue_style() {
+    wp_enqueue_style( 'mytheme-style','https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css')  ; 
+}
+add_action( 'admin_enqueue_scripts', 'stncForm_enqueue_style' );
 
 /*
 

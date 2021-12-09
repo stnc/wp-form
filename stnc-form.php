@@ -17,10 +17,11 @@ $CHfw_meta_key = 'wowPostSetting';
 global $stncCatQuiz;
 $stncCatQuiz = "2.0.0";
 
-require_once "stnc-form-install-database.php";
-// require_once "admin_menu.php";
+require_once "functions/stncForm-install-database.php";
+
 require_once "helper.php";
 require_once "list_table.php";
+require_once "stncForm-adminMenu-About.php";
 
 /** ************************ Menu Defined  ****************************
  *******************************************************************************
@@ -31,7 +32,7 @@ require_once "list_table.php";
 add_action('admin_menu', 'StncMainMenu');
 function StncMainMenu(){
     add_menu_page('Gönüllü Ol Başvuruları','Gönüllüler', 'manage_options', 'stGnlolList', 'tt_render_list_page'); ////burası main menuyu ekler yani üst ksıım 
-    add_submenu_page( 'stGnlolList', 'Ayarlar', 'Ayarlar', 'manage_options', 'stGnlolOptions', 'my_admin_page_contents' ); ////burası alt kısım onun altında olacak olan bolum için 
+    add_submenu_page( 'stGnlolList', 'Ayarlar', 'Ayarlar', 'manage_options', 'stGnlolOptions', 'stncForm_adminMenu_About_contents' ); ////burası alt kısım onun altında olacak olan bolum için 
 }
 
 
@@ -47,7 +48,7 @@ require_once("functions/stncForm-registers.php");
 
 
 
-require_once("stnc-volunteer-shortcode.php");
+require_once("stncForm-frontUploader.php");
 
 
 
