@@ -2,60 +2,70 @@
 
 
 
+
+
+
+
 function stncForm_adminMenu_About_contents()
+{
+?>
+    <div id="advanced" class="postbox ">
+        <div class="inside">
+            <div class="card shadow1" style="max-width:100%!important">
+                <h2>Erciyes Teknopark Video Yükleyici</h2>
+                <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
+                <pre>[StncForm_RegisterForm]</pre>
+                <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
+            </div>
+        </div>
+    </div>
+
+<?php
+
+}
+
+
+///kullanılmıyor 
+function   stncForm_adminMenu_About_test()
 {
 
 ?>
-    <div class="container" style="background-color: #fff;">
+    <div class="col-container">
+        <div class="col-left">
+            <div class="col-wrap">
 
-        <div class="row">
-
-
-            <div id="common-textual-elements" class="card fluid">
-                <h2 class="section double-padded">Erciyes Teknopark Video Yükleyici</h2>
-                <div class="section">
-                    <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır  </p>
+                <div class="card shadow1">
+                    <h2>Erciyes Teknopark Video Yükleyici</h2>
+                    <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
+                    <pre>[StncForm_RegisterForm]</pre>
+                    <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
                 </div>
 
-        
-                <div class="section double-padded">
-                    <h3>Shortcode</h3>
-                    <div class="row dodos">
-                        <div class="col-sm-12 col-md-6">
-                            <pre><span class="code-line"><span class="highlight-c">[StncForm_RegisterForm]</span></span>
-
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <p><mark class="dont">Ekleme:</mark>&nbsp; Yandaki kodu editor içine ekleyiniz</p>
-                        </div>
-                    </div>
+                <div class="card shadow1">
+                    <h2>Erciyes Teknopark Video Yükleyici</h2>
+                    <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
+                    <pre>[StncForm_RegisterForm]</pre>
+                    <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
                 </div>
-        
+
             </div>
-
         </div>
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="card fluid">
-                    <div class="section">SAG</div>
 
-                </div>
+        <div class="col-right">
+            <div class="col-wrap">
 
-
-            </div>
-            <div class="col-sm-4">
-
-                <div class="card ">
-                    <div class="section">SOL</div>
-
-                </div>
 
             </div>
         </div>
     </div>
-    <p>
 
 
-    <?php
+
+
+
+
+
+
+<?php
 
 }
