@@ -151,24 +151,32 @@ function stncForm_registration_form_fields()
               <!-- /.box-header -->
               <!-- form start -->
 
-              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_registration_form" class="form-style-2">
+              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_registration_form">
                 <div class="box-body">
+                  <div class="form-style-2-heading">Provide your information</div>
 
-           
-<div class="form-style-2-heading">Provide your information</div>
-<form action="" method="post">
-<label for="field1"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="field1" value="" /></label>
-<label for="field2"><span>Email <span class="required">*</span></span><input type="text" class="input-field" name="field2" value="" /></label>
-<label><span>Telephone</span><input type="text" class="tel-number-field" name="tel_no_1" value="" maxlength="4" />-<input type="text" class="tel-number-field" name="tel_no_2" value="" maxlength="4"  />-<input type="text" class="tel-number-field" name="tel_no_3" value="" maxlength="10"  /></label>
-<label for="field4"><span>Regarding</span><select name="field4" class="select-field">
-<option value="General Question">General</option>
-<option value="Advertise">Advertisement</option>
-<option value="Partnership">Partnership</option>
-</select></label>
-<label for="field5"><span>Message <span class="required">*</span></span><textarea name="field5" class="textarea-field"></textarea></label>
-
-<label><span> </span><input type="submit" value="Submit" /></label>
-</form>
+                  <ul class="form-style-1">
+                    <li><label>Full Name <span class="required">*</span></label><input type="text" name="field1" class="field-divided" placeholder="First" /> <input type="text" name="field2" class="field-divided" placeholder="Last" /></li>
+                    <li>
+                      <label>Email <span class="required">*</span></label>
+                      <input type="email" name="field3" class="field-long" />
+                    </li>
+                    <li>
+                      <label>Subject</label>
+                      <select name="field4" class="field-select">
+                        <option value="Advertise">Advertise</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="General Question">General</option>
+                      </select>
+                    </li>
+                    <li>
+                      <label>Your Message <span class="required">*</span></label>
+                      <textarea name="field5" id="field5" class="field-long field-textarea"></textarea>
+                    </li>
+                    <li>
+                      <input type="submit" value="Submit" />
+                    </li>
+                  </ul>
 
 
 
@@ -228,7 +236,7 @@ function stncForm_registration_form_fields()
                           Resimleri sürükle bırak ile bu alana atınız veya dosya/ resim yükleme butonunu kullanınız</button></div>
 
                       <br>
-            
+
 
 
 
@@ -236,13 +244,13 @@ function stncForm_registration_form_fields()
 
                         <div class="col-lg-7">
                           <span class=" btn btn-success text-white  fileinput-button">
-                        
+
                             <span>Dosya Ekle...</span>
                           </span>
 
 
                           <a class="btn btn-primary text-white start">
-                          &nbsp;Yüklemeyi başlat
+                            &nbsp;Yüklemeyi başlat
                           </a>
                           <!-- <a class="btn btn-warning   cancel">
                        
@@ -278,8 +286,8 @@ function stncForm_registration_form_fields()
                             </div>
                             <div>
 
-                             <a style="display: none;" class="btn btn-primary text-white start">
-                               Başlat
+                              <a style="display: none;" class="btn btn-primary text-white start">
+                                Başlat
                               </a>
                               <!--  <a data-dz-remove class="btn btn-danger text-white  cancel">
                                 <i class="glyphicon glyphicon-ban-circle"></i>
@@ -324,9 +332,8 @@ function stncForm_registration_form_fields()
 
                       },
                       success: function(file, response) {
-                        alert (response);
-                        setTimeout(function() {
-                        }, 2000);
+                        alert(response);
+                        setTimeout(function() {}, 2000);
                       },
                       addRemoveLinks: true,
                       maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
@@ -373,9 +380,9 @@ function stncForm_registration_form_fields()
                     // The "add files" button doesn't need to be setup because the config
                     // `clickable` has already been specified.
                     document.querySelector("#actions .start").onclick = function() {
-                    
+
                       myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-            
+
 
                     };
 
@@ -499,5 +506,3 @@ function stncForm_add_new_member()
   }
 }
 add_action('init', 'stncForm_add_new_member');
-
-
