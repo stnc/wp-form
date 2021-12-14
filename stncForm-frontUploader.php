@@ -2,7 +2,8 @@
 
 // Fires after WordPress has finished loading, but before any headers are sent.
 
-
+//form ıcın css yukleme yeri 
+//https://www.sanwebe.com/2014/08/css-html-forms-designs
 
 //--------------
 // define the actions for the two hooks created, first for logged in users and the next for logged out users
@@ -150,8 +151,26 @@ function stncForm_registration_form_fields()
               <!-- /.box-header -->
               <!-- form start -->
 
-              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_registration_form" class="stncForm_form">
+              <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_registration_form" class="form-style-2">
                 <div class="box-body">
+
+           
+<div class="form-style-2-heading">Provide your information</div>
+<form action="" method="post">
+<label for="field1"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="field1" value="" /></label>
+<label for="field2"><span>Email <span class="required">*</span></span><input type="text" class="input-field" name="field2" value="" /></label>
+<label><span>Telephone</span><input type="text" class="tel-number-field" name="tel_no_1" value="" maxlength="4" />-<input type="text" class="tel-number-field" name="tel_no_2" value="" maxlength="4"  />-<input type="text" class="tel-number-field" name="tel_no_3" value="" maxlength="10"  /></label>
+<label for="field4"><span>Regarding</span><select name="field4" class="select-field">
+<option value="General Question">General</option>
+<option value="Advertise">Advertisement</option>
+<option value="Partnership">Partnership</option>
+</select></label>
+<label for="field5"><span>Message <span class="required">*</span></span><textarea name="field5" class="textarea-field"></textarea></label>
+
+<label><span> </span><input type="submit" value="Submit" /></label>
+</form>
+
+
 
                   <div class="form-group">
                     <label for="nameLastname"><?php _e('Adınız'); ?></label>
