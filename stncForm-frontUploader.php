@@ -209,38 +209,26 @@ function stncForm_registration_form_fields()
                           Resimleri sürükle bırak ile bu alana atınız veya dosya/ resim yükleme butonunu kullanınız</button></div>
 
                       <br>
-                      <div class="alert alert-info" role="alert">
-
-
-
-                        <br>
-                        <strong style="color: brown;">Maksimum video veya resim boyutu {{ fileConfig.uploadSize }} MB olmalıdır</strong>
-
-
-
-                      </div>
+            
 
 
 
                       <div id="actions" class="row">
 
                         <div class="col-lg-7">
-                          <!-- The fileinput-button span is used to style the file input field as button -->
                           <span class=" btn btn-success text-white  fileinput-button">
-                            <i class="glyphicon glyphicon-plus"></i>
+                        
                             <span>Dosya Ekle...</span>
                           </span>
 
 
                           <a class="btn btn-primary text-white start">
-                            <svg class="c-icon">
-                              <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-lightbulb"></use>
-                            </svg>&nbsp;Yüklemeyi başlat
+                          &nbsp;Yüklemeyi başlat
                           </a>
-                          <a class="btn btn-warning   cancel">
-                            <i class="glyphicon glyphicon-ban-circle"></i>
+                          <!-- <a class="btn btn-warning   cancel">
+                       
                             <span>Yüklemeyi İptal Et</span>
-                          </a>
+                          </a> -->
                         </div>
 
                         <div class="col-lg-5">
@@ -271,15 +259,13 @@ function stncForm_registration_form_fields()
                             </div>
                             <div>
 
-                              <a class="btn btn-primary text-white start">
-                                <svg class="c-icon">
-                                  <use xlink:href="/assets/admin/vendors/@coreui/icons/svg/free.svg#cil-lightbulb"></use>
-                                </svg>&nbsp; Başlat
+                             <a style="display: none;" class="btn btn-primary text-white start">
+                               Başlat
                               </a>
-                              <a data-dz-remove class="btn btn-danger text-white  cancel">
+                              <!--  <a data-dz-remove class="btn btn-danger text-white  cancel">
                                 <i class="glyphicon glyphicon-ban-circle"></i>
                                 <span>İptal</span>
-                              </a>
+                              </a> -->
                               <!-- <a data-dz-remove class="btn btn-danger delete">
                           <i class="glyphicon glyphicon-trash"></i>
                           <span>Sil</span>
@@ -321,8 +307,6 @@ function stncForm_registration_form_fields()
                       success: function(file, response) {
                         alert (response);
                         setTimeout(function() {
-                          // $('#insert_pic_div').hide();
-                          // $('#startEditingDiv').show();
                         }, 2000);
                       },
                       addRemoveLinks: true,
@@ -330,7 +314,7 @@ function stncForm_registration_form_fields()
                       maxFilesize: 10, //max file size in MB,
 
                       // acceptedFiles:  "{{ fileConfig.fileType }}", 
-                      acceptedFiles: "video/mp4,image/jpeg,image/jpg,image/gif,image/png,video/webm",
+                      acceptedFiles: "video/mp4,video/webm",
                       thumbnailWidth: 80,
                       thumbnailHeight: 80,
                       parallelUploads: 1,
@@ -370,12 +354,18 @@ function stncForm_registration_form_fields()
                     // The "add files" button doesn't need to be setup because the config
                     // `clickable` has already been specified.
                     document.querySelector("#actions .start").onclick = function() {
+                    
                       myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+            
+
                     };
-                    document.querySelector("#actions .cancel").onclick = function() {
-                      //alert("ipral")
-                      myDropzone.removeAllFiles(true);
-                    };
+
+
+                    // document.querySelector("#actions .cancel").onclick = function() {
+                    //   //alert("ipral")
+                    //   myDropzone.removeAllFiles(true);
+                    // };
+
                     //TODO: jquery document ile yapılması gerekiyor 
                     //  document.querySelector("#previews .delete").onclick = function () {
                     //      myDropzone.removeAllFiles(true);
