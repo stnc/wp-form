@@ -384,6 +384,13 @@ function stncForm_registration_form_fields()
                       myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
 
 
+                    };  
+                    
+                    document.querySelector(".stnc-start").onclick = function() {
+
+                   alert ("ass")
+
+
                     };
 
 
@@ -410,6 +417,9 @@ function stncForm_registration_form_fields()
                   ?>
                   <input type="hidden" name="stncForm_user_login" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <button type="submit" class="btn btn-primary"><?php _e('Gönder'); ?></button>
+                  <a class="btn btn-primary text-white stnc-start">
+                          &nbsp;Yüklemeyi başlat
+                          </a>
                 </div>
               </form>
             </div>
