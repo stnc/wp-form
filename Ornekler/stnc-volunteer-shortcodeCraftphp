@@ -108,8 +108,8 @@ function stncForm_registration_form()
   $output = stncForm_registration_form_fields();
   return $output;
 }
-add_shortcode('stncForm_RegisterForm', 'stncForm_registration_form');
-// [stncForm_RegisterForm] --- kullanım örneği
+add_shortcode('StncForm_videoYukle', 'stncForm_registration_form');
+// [StncForm_videoYukle] --- kullanım örneği
 
 
 // registration form fields

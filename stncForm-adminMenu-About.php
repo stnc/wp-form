@@ -14,7 +14,7 @@ function stncForm_adminMenu_About_contents()
             <div class="card shadow1" style="max-width:100%!important">
                 <h2>Erciyes Teknopark Video Yükleyici</h2>
                 <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
-                <pre>[StncForm_RegisterForm]</pre>
+                <pre>[StncForm_videoYukle]</pre>
                 <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
             </div>
         </div>
@@ -37,14 +37,14 @@ function   stncForm_adminMenu_About_test()
                 <div class="card shadow1">
                     <h2>Erciyes Teknopark Video Yükleyici</h2>
                     <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
-                    <pre>[StncForm_RegisterForm]</pre>
+                    <pre>[StncForm_videoYukle]</pre>
                     <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
                 </div>
 
                 <div class="card shadow1">
                     <h2>Erciyes Teknopark Video Yükleyici</h2>
                     <p>Bu form erciyes teknopark video yükleme işlemi için Selman Tunç tarafından yapılmıştır</p>
-                    <pre>[StncForm_RegisterForm]</pre>
+                    <pre>[StncForm_videoYukle]</pre>
                     <p><mark class="dont">Ekleme:</mark>&nbsp; üstteki kodu editor içine ekleyiniz</p>
                 </div>
 
