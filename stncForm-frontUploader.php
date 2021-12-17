@@ -377,6 +377,7 @@ function stncForm_VideUploadForm_fields()
                 var mediaIsExist = jQuery("#mediaIsExist").val();
                 if (mediaIsExist != 0) {
                   myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+                  jQuery("#postId").val(data.id)
                 } else {
                   jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">' + data.message + "</div>");
                 }
