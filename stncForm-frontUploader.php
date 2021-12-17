@@ -273,6 +273,8 @@ function stncForm_VideUploadForm_fields()
       });
 
       myDropzone.on("complete", function(file) {
+        jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">Teşekkür Ederiz, Bilgileriniz Başarı İle Gönderildi</div>');
+
         myDropzone.removeFile(file);
       });
 
@@ -323,74 +325,71 @@ function stncForm_VideUploadForm_fields()
             stncForm_user_login: jQuery("#stncForm_user_login").val(),
           };
 
-          var mediaIsExist = jQuery("#mediaIsExist").val();
-          if (mediaIsExist != 0) {
-            // jQuery("#stncForm_VideUploadForm").html(
-            //   '<div class="alert alert-success">' + msg + "</div>"
-            // );
+   
 
+          jQuery.ajax({
+              type: "POST",
+              url: "<?php the_permalink() ?>",
+              data: formData,
+              dataType: "json",
+              encode: true,
+            }).done(function(data) {
+              if (!data.success) {
+                if (data.errors.nameLastname) {
 
-            jQuery.ajax({
-                type: "POST",
-                url: "<?php the_permalink() ?>",
-                data: formData,
-                dataType: "json",
-                encode: true,
-              }).done(function(data) {
-                if (!data.success) {
-                  if (data.errors.nameLastname) {
-
-                    jQuery("#nameLastname-group").addClass("is-invalid");
-                    jQuery("#nameLastname-group").append(
-                      '<div class="invalid-feedback">' + data.errors.nameLastname + "</div>"
-                    );
-                  }
-
-                  if (data.errors.companyName) {
-
-                    jQuery("#companyName-group").addClass("is-invalid");
-                    jQuery("#companyName-group").append(
-                      '<div class="invalid-feedback">' + data.errors.companyName + "</div>"
-                    );
-                  }
-
-
-                  if (data.errors.phone) {
-
-                    jQuery("#phone-group").addClass("is-invalid");
-                    jQuery("#phone-group").append(
-                      '<div class="invalid-feedback">' + data.errors.phone + "</div>"
-                    );
-                  }
-
-                  if (data.errors.mailAdress) {
-
-                    jQuery("#mailAdress-group").addClass("is-invalid");
-                    jQuery("#mailAdress-group").append(
-                      '<div class="invalid-feedback">' + data.errors.mailAdress + "</div>"
-                    );
-                  }
-
-
-
-
-                } else {
-                  // myDropzone.processQueue();
-                  myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-
-                  jQuery("#postId").val(data.id);
-                  // setInterval(every2sec(data.message), 2000);
-
-
+                  jQuery("#nameLastname-group").addClass("is-invalid");
+                  jQuery("#nameLastname-group").append(
+                    '<div class="invalid-feedback">' + data.errors.nameLastname + "</div>"
+                  );
                 }
-              })
-              .fail(function(data) {
-                jQuery("#stncForm_VideUploadForm").html(
-                  '<div class="alert alert-danger">Could not reach server, please try again later.</div>'
-                );
-              });
 
-          }
+                if (data.errors.companyName) {
+
+                  jQuery("#companyName-group").addClass("is-invalid");
+                  jQuery("#companyName-group").append(
+                    '<div class="invalid-feedback">' + data.errors.companyName + "</div>"
+                  );
+                }
+
+
+                if (data.errors.phone) {
+
+                  jQuery("#phone-group").addClass("is-invalid");
+                  jQuery("#phone-group").append(
+                    '<div class="invalid-feedback">' + data.errors.phone + "</div>"
+                  );
+                }
+
+                if (data.errors.mailAdress) {
+
+                  jQuery("#mailAdress-group").addClass("is-invalid");
+                  jQuery("#mailAdress-group").append(
+                    '<div class="invalid-feedback">' + data.errors.mailAdress + "</div>"
+                  );
+                }
+
+
+
+
+              } else {
+                // myDropzone.processQueue();
+
+                var mediaIsExist = jQuery("#mediaIsExist").val();
+                if (mediaIsExist != 0) {
+                  myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+                } else {
+                  jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">' + data.message + "</div>");
+                }
+
+              }
+            })
+            .fail(function(data) {
+              jQuery("#stncForm_VideUploadForm").html(
+                '<div class="alert alert-danger">Could not reach server, please try again later.</div>'
+              );
+            });
+
+          // }
 
 
 
@@ -399,13 +398,7 @@ function stncForm_VideUploadForm_fields()
         });
       });
 
-      function every2sec(msg) {
-        if (jQuery("#postId").val() != "") {
-          jQuery("#stncForm_VideUploadForm").html(
-            '<div class="alert alert-success">' + msg + "</div>"
-          );
-        }
-      }
+
 
       // document.querySelector("#actions .cancel").onclick = function() {
       //   //alert("ipral")
