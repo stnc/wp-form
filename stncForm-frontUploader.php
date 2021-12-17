@@ -7,99 +7,7 @@
 ///https://gist.github.com/aziz-blr/fdef65aed6d60729b47f1f52bd6bd0af
 //https://www.jqueryscript.net/other/Drag-Drop-File-Uploader-Plugin-dropzone.html
 //--------------
-// define the actions for the two hooks created, first for logged in users and the next for logged out users
-add_action("wp_ajax_stncFormSent", "stncFormSent");
-add_action("wp_ajax_nopriv_stncFormSent", "stncFormSent");
 
-
-// define the function to be fired for logged in users
-function stncFormSent()
-{
-
-  // nonce check for an extra layer of security, the function will exit if it fails
-  if (!wp_verify_nonce($_REQUEST['nonce'], "stncFormSent_nonce")) {
-    exit("Woof Woof Woof");
-  }
-
-
-  // Throws a message if no file is selected
-  if (!$_FILES['file']['name']) {
-    wp_die(esc_html__('Please choose a file', 'theme-text-domain'));
-  }
-
-  $allowed_extensions = array('jpg', 'jpeg', 'png', 'mp4');
-  $file_type = wp_check_filetype($_FILES['file']['name']);
-  $file_extension = $file_type['ext'];
-
-  // Check for valid file extension
-  if (!in_array($file_extension, $allowed_extensions)) {
-    wp_die(sprintf(esc_html__('Invalid file extension, only allowed: %s', 'theme-text-domain'), implode(', ', $allowed_extensions)));
-  }
-
-  $file_size = $_FILES['file']['size'];
-  $allowed_file_size = 512000 * 50; // Here we are setting the file size limit to 500 KB = 500 × 1024
-
-  // Check for file size limit
-  if ($file_size >= $allowed_file_size) {
-    wp_die(sprintf(esc_html__('File size limit exceeded, file size should be smaller than %d KB', 'theme-text-domain'), $allowed_file_size / 1000));
-  }
-
-  // These files need to be included as dependencies when on the front end.
-  require_once(ABSPATH . 'wp-admin/includes/image.php');
-  require_once(ABSPATH . 'wp-admin/includes/file.php');
-  require_once(ABSPATH . 'wp-admin/includes/media.php');
-
-  // Let WordPress handle the upload.
-  // Remember, 'wpcfu_file' is the name of our file input in our form above.
-  // Here post_id is 0 because we are not going to attach the media to any post.
-  $attachment_id = media_handle_upload('file', 0);
-
-  if (is_wp_error($attachment_id)) {
-    // There was an error uploading the image.
-    wp_die($attachment_id->get_error_message());
-  } else {
-    echo     $attachment_id;
-    // We will redirect the user to the attachment page after uploading the file successfully.
-    // wp_redirect( get_the_permalink( $attachment_id ) );
-    exit;
-  }
-}
-
-// define the function to be fired for logged out users
-function please_login()
-{
-  echo "You must log in to like";
-  die();
-}
-
-
-// user registration login form
-function stncForm_VideUploadForm()
-{
-
-  // only show the registration form to non-logged-in members
-
-
-  global $stncForm_load_css;
-
-  // set this to true so the CSS is loaded
-  $stncForm_load_css = true;
-  /*
-		// check to make sure user registration is enabled
-		$registration_enabled = get_option('users_can_register');
-	
-		// only show the registration form if allowed
-		if($registration_enabled) {
-			$output = stncForm_VideUploadForm_fields();
-		} else {
-			$output = __('User registration is not enabled');
-		}
-*/
-  $output = stncForm_VideUploadForm_fields();
-  return $output;
-}
-add_shortcode('StncForm_videoYukle', 'stncForm_VideUploadForm');
-// [StncForm_videoYukle] --- kullanım örneği
 
 
 // registration form fields
@@ -107,8 +15,6 @@ function stncForm_VideUploadForm_fields()
 {
   ob_start();
 
-  $errors = [];
-  $data = [];
 
   $nameLastname        = isset($_POST["nameLastname"]) ? sanitize_text_field($_POST["nameLastname"]) : "";
   $companyName        = isset($_POST["companyName"]) ? sanitize_text_field($_POST["companyName"]) : "";
@@ -168,7 +74,7 @@ function stncForm_VideUploadForm_fields()
                   </li>
 
                   <li id="webSite-group" class="form-group">
-                    <label>Web Sitesi <span class="required">*</span></label>
+                    <label>Web Sitesi </label>
                     <input type="text" name="webSite" id="webSite" value="<?php echo $webSite ?>" class="field-long" />
                   </li>
 
@@ -181,12 +87,16 @@ function stncForm_VideUploadForm_fields()
                     </select>
                   </li>
 
+
+
+                  <br>
+
                   <!-- <li>
                       <input type="submit" value="Submit" />
                     </li> -->
                 </ul>
 
-
+                <div id="upload-group" class="alert alert-danger" style="display: none;" role="alert"></div>
 
                 <div style="    border: 2px dashed #0087F7;" class="dropzone needsclick dz-clickable">
                   <div class="dz-message needsclick">
@@ -194,7 +104,7 @@ function stncForm_VideUploadForm_fields()
 
 
                     <div class="alert alert-warning" role="alert"><button type="button" class="dz-button">
-                        Videoları sürükle bırak ile bu alana atınız veya dosya ekle butonunu kullanınız</button></div>
+                        Videoları sürükle bırak ile bu alana atınız veya dosya ekle butonunu kullanınız, <br> maksimum dosya boyutu 100 MB dan büyük olamaz</button></div>
 
                     <br>
 
@@ -274,7 +184,8 @@ function stncForm_VideUploadForm_fields()
 
 
                 <div id="stncfooter" class="box-footer">
-                  <input type="hidden" name="mediaId" id="mediaId" />
+                  <input type="hidden" name="mediaIsExist" id="mediaIsExist" value="0" />
+                  <input type="hidden" name="postId" id="postId" />
                   <input type="hidden" name="stncForm_register_nonce" id="stncForm_register_nonce" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <?php // wp_nonce_field( 'upload_wpcfu_file', 'wpcfu_nonce', true, false ); 
                   ?>
@@ -313,29 +224,36 @@ function stncForm_VideUploadForm_fields()
 
         init: function() {
           this.on("sending", function(file, xhr, formData) {
+
+            formData.append("postID", jQuery("#postId").val());
             formData.append("action", "stncFormSent");
             formData.append("nonce", "<?php echo wp_create_nonce("stncFormSent_nonce") ?>");
             console.log(formData)
           });
 
         },
-        success: function(file, response) {
-          jQuery("#mediaId").val(response);
-          setTimeout(function() {}, 2000);
-
-          var res = JSON.parse(response);
-          if (res.error) {
-            jQuery(file.previewTemplate).children('.dz-error-mark').css('opacity', '1')
+        success: function(file, data) {
+          console.log(data)
+          var res = JSON.parse(data);
+          if (!res.success) {
+            if (res.errors.hata) {
+              jQuery("#upload-group").show();
+              jQuery("#upload-group").addClass("is-invalid");
+              jQuery("#upload-group").html(
+                '<div class="invalid-feedback">' + res.errors.hata + "</div>"
+              );
+            }
           }
-
+          // var res = JSON.parse(response);
+          // if (res.error) {
+          //   jQuery(file.previewTemplate).children('.dz-error-mark').css('opacity', '1')
+          // }
 
         },
         addRemoveLinks: true,
         maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
-        maxFilesize: 10, //max file size in MB,
-
-        // acceptedFiles:  "{{ fileConfig.fileType }}", 
-        acceptedFiles: "video/mp4,video/webm",
+        maxFilesize: 100, //max file size in MB,
+        acceptedFiles: "video/mp4,video/webm,	application/pdf,	application/vnd.ms-powerpoint,	application/vnd.openxmlformats-officedocument.presentationml.presentation",
         thumbnailWidth: 80,
         thumbnailHeight: 80,
         parallelUploads: 1,
@@ -347,8 +265,8 @@ function stncForm_VideUploadForm_fields()
       });
 
       myDropzone.on("addedfile", function(file) {
-        // Hookup the start button
-
+        // Hookup the start button       
+        jQuery("#mediaIsExist").val("1");
         file.previewElement.querySelector(".start").onclick = function() {
           myDropzone.enqueueFile(file);
         };
@@ -357,6 +275,8 @@ function stncForm_VideUploadForm_fields()
       myDropzone.on("complete", function(file) {
         myDropzone.removeFile(file);
       });
+
+
       // Update the total progress bar
       myDropzone.on("totaluploadprogress", function(progress) {
         document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
@@ -367,10 +287,12 @@ function stncForm_VideUploadForm_fields()
         document.querySelector("#total-progress").style.opacity = "1";
         // And disable the start button
         file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+
       });
 
       // Hide the total progress bar when nothing's uploading anymore
       myDropzone.on("queuecomplete", function(progress) {
+
         document.querySelector("#total-progress").style.opacity = "0";
       });
 
@@ -397,86 +319,93 @@ function stncForm_VideUploadForm_fields()
             mailAdress: jQuery("#mailAdress").val(),
             webSite: jQuery("#webSite").val(),
             travel_ban: jQuery("#travel_ban").val(),
-            mediaId: jQuery("#mediaId").val(),
-
             stncForm_register_nonce: jQuery("#stncForm_register_nonce").val(),
             stncForm_user_login: jQuery("#stncForm_user_login").val(),
-
           };
 
-          jQuery.ajax({
-              type: "POST",
-              url: "<?php the_permalink() ?>",
-              data: formData,
-              dataType: "json",
-              encode: true,
-            }).done(function(data) {
-              if (!data.success) {
-                if (data.errors.nameLastname) {
+          var mediaIsExist = jQuery("#mediaIsExist").val();
+          if (mediaIsExist != 0) {
+            // jQuery("#stncForm_VideUploadForm").html(
+            //   '<div class="alert alert-success">' + msg + "</div>"
+            // );
 
-                  jQuery("#nameLastname-group").addClass("is-invalid");
-                  jQuery("#nameLastname-group").append(
-                    '<div class="invalid-feedback">' + data.errors.nameLastname + "</div>"
-                  );
+
+            jQuery.ajax({
+                type: "POST",
+                url: "<?php the_permalink() ?>",
+                data: formData,
+                dataType: "json",
+                encode: true,
+              }).done(function(data) {
+                if (!data.success) {
+                  if (data.errors.nameLastname) {
+
+                    jQuery("#nameLastname-group").addClass("is-invalid");
+                    jQuery("#nameLastname-group").append(
+                      '<div class="invalid-feedback">' + data.errors.nameLastname + "</div>"
+                    );
+                  }
+
+                  if (data.errors.companyName) {
+
+                    jQuery("#companyName-group").addClass("is-invalid");
+                    jQuery("#companyName-group").append(
+                      '<div class="invalid-feedback">' + data.errors.companyName + "</div>"
+                    );
+                  }
+
+
+                  if (data.errors.phone) {
+
+                    jQuery("#phone-group").addClass("is-invalid");
+                    jQuery("#phone-group").append(
+                      '<div class="invalid-feedback">' + data.errors.phone + "</div>"
+                    );
+                  }
+
+                  if (data.errors.mailAdress) {
+
+                    jQuery("#mailAdress-group").addClass("is-invalid");
+                    jQuery("#mailAdress-group").append(
+                      '<div class="invalid-feedback">' + data.errors.mailAdress + "</div>"
+                    );
+                  }
+
+
+
+
+                } else {
+                  // myDropzone.processQueue();
+                  myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+
+                  jQuery("#postId").val(data.id);
+                  // setInterval(every2sec(data.message), 2000);
+
+
                 }
+              })
+              .fail(function(data) {
+                jQuery("#stncForm_VideUploadForm").html(
+                  '<div class="alert alert-danger">Could not reach server, please try again later.</div>'
+                );
+              });
 
-                if (data.errors.companyName) {
-
-                  jQuery("#companyName-group").addClass("is-invalid");
-                  jQuery("#companyName-group").append(
-                    '<div class="invalid-feedback">' + data.errors.companyName + "</div>"
-                  );
-                }
-
-
-                if (data.errors.phone) {
-
-                  jQuery("#phone-group").addClass("is-invalid");
-                  jQuery("#phone-group").append(
-                    '<div class="invalid-feedback">' + data.errors.phone + "</div>"
-                  );
-                }
-
-                if (data.errors.mailAdress) {
-
-                  jQuery("#mailAdress-group").addClass("is-invalid");
-                  jQuery("#mailAdress-group").append(
-                    '<div class="invalid-feedback">' + data.errors.mailAdress + "</div>"
-                  );
-                }
-
-                if (data.errors.webSite) {
-                  jQuery("#webSite-group").addClass("is-invalid");
-                  jQuery("#webSite-group").append(
-                    '<div class="invalid-feedback">' + data.errors.webSite + "</div>"
-                  );
-                }
+          }
 
 
 
-              } else {
-                // myDropzone.processQueue();
-                myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-                if (jQuery("#mediaId").val() != "") {
-                  jQuery("#stncForm_VideUploadForm").html(
-                    '<div class="alert alert-success">' + data.message + "</div>"
-                  );
-                }
-
-              }
-
-            })
-            .fail(function(data) {
-              jQuery("#stncForm_VideUploadForm").html(
-                '<div class="alert alert-danger">Could not reach server, please try again later.</div>'
-              );
-            });
 
 
         });
       });
 
-
+      function every2sec(msg) {
+        if (jQuery("#postId").val() != "") {
+          jQuery("#stncForm_VideUploadForm").html(
+            '<div class="alert alert-success">' + msg + "</div>"
+          );
+        }
+      }
 
       // document.querySelector("#actions .cancel").onclick = function() {
       //   //alert("ipral")
@@ -504,7 +433,7 @@ function stncForm_VideUploadForm_fields()
 function stncForm_add_new_member()
 {
 
-  global $wpdb;
+
 
   if (isset($_POST["stncForm_user_login"]) && wp_verify_nonce($_POST['stncForm_register_nonce'], 'stncForm-register-nonce')) {
 
@@ -517,7 +446,7 @@ function stncForm_add_new_member()
     $mailAdress        = isset($_POST["mailAdress"]) ? sanitize_text_field($_POST["mailAdress"]) : "";
     $webSite        = isset($_POST["webSite"]) ? sanitize_text_field($_POST["webSite"]) : "";
     $travel_ban        = isset($_POST["travel_ban"]) ? sanitize_text_field($_POST["travel_ban"]) : "";
-    $media_id        = isset($_POST["mediaId"]) ? sanitize_text_field($_POST["mediaId"]) : "";
+
 
     if (empty($nameLastname)) {
       $errors['nameLastname'] = 'Lütfen Ad Soyad alanını doldurunuz.';
@@ -539,9 +468,9 @@ function stncForm_add_new_member()
     }
 
 
-    if (empty($webSite)) {
-      $errors['webSite'] = 'Lütfen web site adresinizi giriniz';
-    }
+    // if (empty($webSite)) {
+    //   $errors['webSite'] = 'Lütfen web site adresinizi giriniz';
+    // }
 
 
     if (!empty($errors)) {
@@ -551,8 +480,9 @@ function stncForm_add_new_member()
       $data['success'] = true;
       $data['message'] = 'Bilgileriniz Gönderildi, Teşekkür ederiz';
 
+      global $wpdb;
       $tableNameMain = $wpdb->prefix . 'stnc_teknoparkform';
-      $insertResult =  $wpdb->insert($tableNameMain, array(
+      $wpdb->insert($tableNameMain, array(
 
         'namelastname' => $nameLastname,
         'company_name' => $companyName,
@@ -562,11 +492,13 @@ function stncForm_add_new_member()
         'phone' => $phone,
         'comment' => " ",
         'travel_ban' => $travel_ban,
-        'media_id' => $mediaId,
+        'media_id' => 0,
         'user_ip' => stnc_GetIP(),
         'add_date' => current_time('mysql', 1),
 
       ));
+      $data['id'] =  $wpdb->insert_id;
+
 
       /*
       ajax olmasa kullanırdım 

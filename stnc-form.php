@@ -49,6 +49,7 @@ require_once("functions/stncForm-registers.php");
 
 
 require_once("stncForm-frontUploader.php");
+require_once("stncForm-frontDropzone.php");
 
 
 

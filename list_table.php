@@ -360,14 +360,42 @@ class TT_Example_List_Table extends WP_List_Table
 			$nonce = esc_attr($_REQUEST['_wpnonce']);
 			 $id = filter_input(INPUT_GET, 'customer', FILTER_DEFAULT);
 			$data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}stnc_teknoparkform WHERE id = $id");
-			echo $data -> namelastname;
+			// print_r(	$data );
+
 
 		//https://stackoverflow.com/questions/63659504/how-to-get-attachment-id-of-a-file-uploaded-in-wordpress-post
 			   $oynat= wp_get_attachment_url( $data -> media_id );
 
 			echo  do_shortcode('[evp_embed_video url="'.   $oynat.'"  autoplay="true" width="640" template="mediaelement" preload="auto" ]');
-			echo "<br>";
-			echo "burası veri basacak yer ";
+
+
+
+			?>
+			<div id="advanced" class="postbox ">
+				<div class="inside">
+					<div class="card shadow1" style="max-width:100%!important">
+						<h2>Erciyes Teknopark Video Yükleyici Yüklenen Bilgiler</h2>
+
+						<div><mark class="dont">Adı Soyadı:</mark> <?php 		echo $data -> namelastname;?></div>
+						<hr>
+						<div><mark class="dont">Şirket:</mark> <?php 		echo $data -> company_name;?></div>
+						<hr>
+						<div><mark class="dont">Telefon:</mark> <?php 		echo $data -> phone;?></div>
+						<hr>
+						<div><mark class="dont">Mail adresi:</mark> <?php 		echo $data -> mail_adress;?></div>
+						<hr>
+						<div><mark class="dont">web site:</mark> <?php 		echo $data -> web_site;?></div>
+						<hr>
+						<div><mark class="dont">Seyahat Engeli:</mark> <?php 		echo $data -> travel_ban;?></div>
+					</div>
+				</div>
+			</div>
+		
+		<?php
+		
+		
+
+			
 			exit;
 		}
 

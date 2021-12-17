@@ -12,6 +12,12 @@
     border-color: #fde9bd;
 }
 
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
 .dropzone .dz-message .dz-button {
     background: none;
     color: inherit;
