@@ -388,7 +388,7 @@ class TT_Example_List_Table extends WP_List_Table
 						<hr>
 						<div><mark class="dont">Seyahat Engeli:</mark> <?php 		echo $data -> travel_ban;?></div>
 						<hr>
-						<div><mark class="dont">Eklenen Dosya:</mark> <a href="<?php 		echo $oynat;?">AÇ</a></div>
+						<div><mark class="dont">Eklenen Dosya:</mark> <a href="<?php 		echo $oynat;?>">AÇ</a></div>
 					</div>
 				</div>
 			</div>
