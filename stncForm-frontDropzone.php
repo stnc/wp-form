@@ -23,7 +23,7 @@ function stncFormSent()
     wp_die(esc_html__('Please choose a file', 'theme-text-domain'));
   }
 
-  $allowed_extensions = array('ppt', 'pptx', 'webm', 'm4v', 'mp4','pdf');
+  $allowed_extensions = array('ppt', 'pptx', 'webm', 'm4v', 'mp4');
   $file_type = wp_check_filetype($_FILES['file']['name']);
   $file_extension = $file_type['ext'];
 
@@ -38,7 +38,7 @@ function stncFormSent()
 
   $file_size = $_FILES['file']['size'];
 
-  $allowed_file_size = 1048576 * 100; //http://www.learningaboutelectronics.com/Articles/How-to-restrict-the-size-of-a-file-upload-with-PHP.php
+  $allowed_file_size = 1048576 * 80; //http://www.learningaboutelectronics.com/Articles/How-to-restrict-the-size-of-a-file-upload-with-PHP.php
 
 
   //   // Check for file size limit
@@ -65,7 +65,8 @@ function stncFormSent()
 
 
   $attachment_id = media_handle_upload('file', 0);
-// wp_die($attachment_id->get_error_message());
+
+
   if (is_wp_error($attachment_id)) {
     // There was an error uploading the image.
     //  wp_die($attachment_id->get_error_message());

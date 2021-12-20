@@ -47,10 +47,13 @@ if (!class_exists('WP_List_Table')) {
  * 
  * Our theme for this list table is going to be movies.
  */
-class STNC_teknolist_List_Table extends WP_List_Table
+class TT_Example_List_Table extends WP_List_Table
 {
 
-
+	/**
+	 * Const to declare number of posts to show per page in the table.
+	 */
+	const POSTS_PER_PAGE = 10;
 
 	/**
 	 * Property to store post types
@@ -67,8 +70,8 @@ class STNC_teknolist_List_Table extends WP_List_Table
 
 		parent::__construct(
 			array(
-				'singular' => __('stncformer', 'sp'), //singular name of the listed records
-				'plural'   => __('stncformers', 'sp'), //plural name of the listed records
+				'singular' => __('Customer', 'sp'), //singular name of the listed records
+				'plural'   => __('Customers', 'sp'), //plural name of the listed records
 				'ajax'     => false //does this table support ajax?
 			)
 		);
@@ -167,10 +170,10 @@ class STNC_teknolist_List_Table extends WP_List_Table
 	{
 		return array(
 			'cb'     => '<input type="checkbox"/>',
-			'namelastname'  => __('Ad Soyad', 'admin-table-tut'),
-			'company_name'   => __('Firma', 'admin-table-tut'),
-			'phone' => __('Telefon', 'admin-table-tut'),
-			'add_date'   => __('Eklenme Tarihi', 'admin-table-tut'),
+			'namelastname'  => __('Name', 'admin-table-tut'),
+			'company_name'   => __('Company', 'admin-table-tut'),
+			'phone' => __('Phone', 'admin-table-tut'),
+			'add_date'   => __('Date', 'admin-table-tut'),
 		);
 	}
 
@@ -192,19 +195,19 @@ class STNC_teknolist_List_Table extends WP_List_Table
 	 **************************************************************************/
 	function column_namelastname($item)
 	{
-		$delete_nonce = wp_create_nonce('sp_delete_stncformer');
+		$delete_nonce = wp_create_nonce('sp_delete_customer');
 
 		$title = '<strong>' . $item['namelastname'] . '</strong>';
 
 		$actions = [
-			'view' => sprintf('<a href="?page=%s&action=%s&stncformer=%s&_wpnonce=%s">Göster</a>', esc_attr($_REQUEST['page']), 'view', absint($item['id']), $delete_nonce),
-			'delete' => sprintf('<a href="?page=%s&action=%s&stncformer=%s&_wpnonce=%s">Sil</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['id']), $delete_nonce)
+			'view' => sprintf('<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">view</a>', esc_attr($_REQUEST['page']), 'view', absint($item['id']), $delete_nonce),
+			'delete' => sprintf('<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['id']), $delete_nonce)
 		];
 
 		return $title . $this->row_actions($actions);
 	}
 
-	//http://summit.test/wp-admin/admin.php?page=wp_list_table_class&action=delete&stncformer=16&_wpnonce=243e56ab02
+	//http://summit.test/wp-admin/admin.php?page=wp_list_table_class&action=delete&customer=16&_wpnonce=243e56ab02
 
 	/**
 	 * Column cb.
@@ -237,7 +240,7 @@ class STNC_teknolist_List_Table extends WP_List_Table
 
 		$this->process_bulk_action();
 
-		$per_page     = $this->get_items_per_page('stncformers_per_page', 15);
+		$per_page     = $this->get_items_per_page('customers_per_page', 15);
 		$current_page = $this->get_pagenum();
 		$total_items  = self::record_count();
 
@@ -247,18 +250,18 @@ class STNC_teknolist_List_Table extends WP_List_Table
 		]);
 
 
-		$this->items = self::get_stncformers($per_page, $current_page);
+		$this->items = self::get_customers($per_page, $current_page);
 	}
 
 	/**
-	 * Retrieve stncformers data from the database
+	 * Retrieve customers data from the database
 	 *
 	 * @param int $per_page
 	 * @param int $page_number
 	 *
 	 * @return mixed
 	 */
-	public static function get_stncformers($per_page = 5, $page_number = 1)
+	public static function get_customers($per_page = 5, $page_number = 1)
 	{
 
 		global $wpdb;
@@ -272,7 +275,7 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			$sql = "SELECT * FROM {$wpdb->prefix}stnc_teknoparkform WHERE namelastname LIKE '%$search%' ";
 			if (!empty($_REQUEST['orderby'])) {
 				$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
-				$sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' DESC';
+				$sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
 			}
 
 			$sql .= " LIMIT $per_page";
@@ -282,14 +285,11 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			$sql = "SELECT * FROM {$wpdb->prefix}stnc_teknoparkform";
 			if (!empty($_REQUEST['orderby'])) {
 				$sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
-				$sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' DESC';
-			} else {
-				$sql .= ' ORDER BY id desc'; //default sort 
+				$sql .= !empty($_REQUEST['order']) ? ' ' . esc_sql($_REQUEST['order']) : ' ASC';
 			}
 
 			$sql .= " LIMIT $per_page";
 			$sql .= ' OFFSET ' . ($page_number - 1) * $per_page;
-			
 			$result = $wpdb->get_results($sql, 'ARRAY_A');
 		}
 
@@ -341,10 +341,10 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr($_REQUEST['_wpnonce']);
 
-			if (!wp_verify_nonce($nonce, 'sp_delete_stncformer')) {
+			if (!wp_verify_nonce($nonce, 'sp_delete_customer')) {
 				die('Go get a life script kiddies');
 			} else {
-				self::delete_stncformer(absint($_GET['stncformer']));
+				self::delete_customer(absint($_GET['customer']));
 
 				// esc_url_raw() is used to prevent converting ampersand in url to "#038;"
 				// add_query_arg() return the current url
@@ -358,7 +358,7 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			global $wpdb;
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr($_REQUEST['_wpnonce']);
-			 $id = filter_input(INPUT_GET, 'stncformer', FILTER_DEFAULT);
+			 $id = filter_input(INPUT_GET, 'customer', FILTER_DEFAULT);
 			$data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}stnc_teknoparkform WHERE id = $id");
 			// print_r(	$data );
 
@@ -366,7 +366,7 @@ class STNC_teknolist_List_Table extends WP_List_Table
 		//https://stackoverflow.com/questions/63659504/how-to-get-attachment-id-of-a-file-uploaded-in-wordpress-post
 			   $oynat= wp_get_attachment_url( $data -> media_id );
 
-	//		echo  do_shortcode('[evp_embed_video url="'.   $oynat.'"  autoplay="true" width="640" template="mediaelement" preload="auto" ]');
+			echo  do_shortcode('[evp_embed_video url="'.   $oynat.'"  autoplay="true" width="640" template="mediaelement" preload="auto" ]');
 
 
 
@@ -387,13 +387,8 @@ class STNC_teknolist_List_Table extends WP_List_Table
 						<div><mark class="dont">web site:</mark> <?php 		echo $data -> web_site;?></div>
 						<hr>
 						<div><mark class="dont">Seyahat Engeli:</mark> <?php 		echo $data -> travel_ban;?></div>
-						<?php if ( $data -> media_id!=0) { ?>
 						<hr>
-						<div><mark class="dont">Eklenen Dosya:</mark> <a href="<?php 		echo $oynat;?>">AÇ</a></div>
-					    <?php } else {	?>
-							<hr>
-						<div><strong>Eklenmiş Bir Dosya Bulunamadı.</strong></div>
-						<?php } 	?>
+						<div><mark class="dont">Eklenen Dosya:</mark> <a href="<?php 		echo $oynat;?">AÇ</a></div>
 					</div>
 				</div>
 			</div>
@@ -412,14 +407,14 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			|| (isset($_POST['action2']) && $_POST['action2'] == 'bulk-delete')
 		) {
 
-			$post_ids = filter_input(INPUT_POST, 'stncformer_id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+			$post_ids = filter_input(INPUT_POST, 'customer_id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
 
 			if (is_array($post_ids)) {
 
 				$post_ids = array_map('intval', $post_ids);
 				foreach ($post_ids as $id) {
-					self::delete_stncformer($id);
+					self::delete_customer($id);
 				}
 				// if ( count( $post_ids ) ) {
 				// 	array_map( 'wp_trash_post', $post_ids );
@@ -438,11 +433,11 @@ class STNC_teknolist_List_Table extends WP_List_Table
 
 
 	/**
-	 * Delete a stncformer record.
+	 * Delete a customer record.
 	 *
-	 * @param int $id stncformer ID
+	 * @param int $id customer ID
 	 */
-	public static function delete_stncformer($id)
+	public static function delete_customer($id)
 	{
 		global $wpdb;
 
@@ -452,18 +447,6 @@ class STNC_teknolist_List_Table extends WP_List_Table
 			['%d']
 		);
 	}
-
-
-
-
-	          /**
-         * This checks for sorting input and sorts the data in our array accordingly.
-         * 
-         * In a real-world situation involving a database, you would probably want 
-         * to handle sorting by passing the 'orderby' and 'order' values directly 
-         * to a custom query. The returned data will be pre-sorted, and this array
-         * sorting technique would be unnecessary.
-         */
 
 
 	/**
@@ -565,7 +548,6 @@ class STNC_teknolist_List_Table extends WP_List_Table
 	{
 
 		return array(
-			'id'  => array('id', true),
 			'namelastname'  => array('namelastname', false),
 			'company_name'   => array('company_name', false),
 			'phone'   => array('phone', false),
@@ -601,7 +583,7 @@ function tt_render_list_page()
 {
 
 	//Create an instance of our package class...
-	$testListTable = new STNC_teknolist_List_Table();
+	$testListTable = new TT_Example_List_Table();
 	//Fetch, prepare, sort, and filter our data...
 	$testListTable->prepare_items();
 
