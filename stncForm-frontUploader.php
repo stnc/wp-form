@@ -104,8 +104,8 @@ function stncForm_VideUploadForm_fields()
 
 
                     <div class="alert alert-warning" role="alert"><button type="button" class="dz-button">
-                        Videoları sürükle bırak ile bu alana atınız veya dosya ekle butonunu kullanınız, <br> maksimum dosya boyutu 100 MB dan büyük olamaz</button></div>
-
+                        Dosyaları sürükle bırak ile bu alana atınız veya dosya ekle butonunu kullanınız, <br> maksimum dosya boyutu 100 MB dan büyük olamaz</button></div>
+                        PDF,ppt,ppx,mp4,webm dosyaları yüklenebilir.
                     <br>
 
 
@@ -119,9 +119,8 @@ function stncForm_VideUploadForm_fields()
                           <span>Dosya Ekle...</span>
                         </span>
 
-
                         <a class="btn btn-primary text-white start" style="display: none!important">
-                          &nbsp;Yüklemeyi başlat
+                          &nbsp;Başlat
                         </a>
                         <!-- <a class="btn btn-warning   cancel">
                        
@@ -187,12 +186,12 @@ function stncForm_VideUploadForm_fields()
                   <input type="hidden" name="mediaIsExist" id="mediaIsExist" value="0" />
                   <input type="hidden" name="postId" id="postId" />
                   <input type="hidden" name="stncForm_register_nonce" id="stncForm_register_nonce" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
-                  <?php // wp_nonce_field( 'upload_wpcfu_file', 'wpcfu_nonce', true, false ); 
+                  <?php  echo wp_nonce_field( 'upload_wpcfu_file', 'wpcfu_nonce', true, false ); 
                   ?>
                   <input type="hidden" name="stncForm_user_login" id="stncForm_user_login" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <!-- <button type="submit" class="btn btn-primary"><?php _e('Gönder'); ?></button> -->
                   <a id="ders" class="btn btn-primary text-white stnc-start">
-                    &nbsp;Yüklemeyi başlat
+                    &nbsp;Gönder
                   </a>
                 </div>
                 <!-- </form> -->
@@ -273,7 +272,7 @@ function stncForm_VideUploadForm_fields()
       });
 
       myDropzone.on("complete", function(file) {
-        jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">Teşekkür deriz, Bilgileriniz Başarı İle Gönderildi</div>');
+        jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">Teşekkür ederiz, Bilgileriniz Başarı İle Gönderildi</div>');
 
         myDropzone.removeFile(file);
       });
