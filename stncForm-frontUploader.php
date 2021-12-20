@@ -273,7 +273,7 @@ function stncForm_VideUploadForm_fields()
       });
 
       myDropzone.on("complete", function(file) {
-        jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">Teşekkür Ederiz, Bilgileriniz Başarı İle Gönderildi</div>');
+        jQuery("#stncForm_VideUploadForm").html('<div class="alert alert-success">Teşekkür deriz, Bilgileriniz Başarı İle Gönderildi</div>');
 
         myDropzone.removeFile(file);
       });
