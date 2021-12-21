@@ -23,7 +23,7 @@ function stncFormSent()
     wp_die(esc_html__('Please choose a file', 'theme-text-domain'));
   }
 
-  $allowed_extensions = array('ppt', 'pptx', 'webm', 'm4v', 'mp4');
+  $allowed_extensions = array('ppt', 'pptx', 'webm','pdf', 'm4v', 'mp4');
   $file_type = wp_check_filetype($_FILES['file']['name']);
   $file_extension = $file_type['ext'];
 
@@ -80,7 +80,7 @@ function stncFormSent()
     $dbData = array();
     $dbData['media_id'] = $attachment_id;
 
-    $wpdb->update($tableNameMain, $dbData, array('id' => $_REQUEST['postID']));
+    $wpdb->update($tableNameMain, $dbData, array('id' => sanitize_text_field($_REQUEST['postID'] )));
   }
 
 

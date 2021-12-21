@@ -8,7 +8,7 @@
 //https://www.jqueryscript.net/other/Drag-Drop-File-Uploader-Plugin-dropzone.html
 //--------------
 
-
+//https://onyxdev.net/snippets-item/dropzonejs-example-with-translations-custom-preview-and-upload-delete-file-with-php/    fğzel ornek 
 
 // registration form fields
 function stncForm_VideUploadForm_fields()
@@ -221,7 +221,21 @@ function stncForm_VideUploadForm_fields()
 
       var myDropzone = new Dropzone("#stncForm_VideUploadForm", { // Make the whole body a dropzone
         url: myAjax.ajaxurl,
-
+        addRemoveLinks: true,
+        maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
+        maxFilesize: 80, //max file size in MB,
+        acceptedFiles: "video/mp4,video/webm,	application/pdf,	application/vnd.ms-powerpoint,	application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 1,
+        previewTemplate: previewTemplate,
+        autoProcessQueue: true,
+        // chunking:true,
+        // chunkSize:50000000,
+        uploadMultiple:false,
+        autoQueue: false, // Make sure the files aren't queued until manually added
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
         init: function() {
           this.on("sending", function(file, xhr, formData) {
 
@@ -250,18 +264,7 @@ function stncForm_VideUploadForm_fields()
           // }
 
         },
-        addRemoveLinks: true,
-        maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
-        maxFilesize: 100, //max file size in MB,
-        acceptedFiles: "video/mp4,video/webm,	application/pdf,	application/vnd.ms-powerpoint,	application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        thumbnailWidth: 80,
-        thumbnailHeight: 80,
-        parallelUploads: 1,
-        previewTemplate: previewTemplate,
-        autoProcessQueue: true,
-        autoQueue: false, // Make sure the files aren't queued until manually added
-        previewsContainer: "#previews", // Define the container to display the previews
-        clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+
       });
 
       myDropzone.on("addedfile", function(file) {
@@ -323,6 +326,7 @@ function stncForm_VideUploadForm_fields()
             travel_ban: jQuery("#travel_ban").val(),
             stncForm_register_nonce: jQuery("#stncForm_register_nonce").val(),
             stncForm_user_login: jQuery("#stncForm_user_login").val(),
+      
           };
 
    
@@ -375,6 +379,7 @@ function stncForm_VideUploadForm_fields()
                 // myDropzone.processQueue();
 
                 var mediaIsExist = jQuery("#mediaIsExist").val();
+                jQuery("#postId").val(data.id)
                 if (mediaIsExist != 0) {
                   myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
                 } else {
