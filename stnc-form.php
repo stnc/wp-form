@@ -39,8 +39,6 @@ function StncMainMenu(){
 
 
 /**v******************************************** */
-/**v******************************************** */
-/**v******************************************** */
 
 
 
@@ -64,6 +62,10 @@ diğerlerini short codelar
 // [StncForm_videoYukle] --- kullanım örneği  --- benım 
 [dropzonerest] api ile calısanın 
 */
+
+
+
+
 
 /* Remove the "Dashboard" from the admin menu for non-admin users **********************************
 ** http://wordpress.stackexchange.com/questions/52752/hide-dashboard-from-non-admin-users ******* */	

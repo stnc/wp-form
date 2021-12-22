@@ -21,7 +21,7 @@ function stncForm_install()
             PRIMARY KEY  (id)
         ) $charset_collate;";
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+  //  dbDelta($sql);
     // echo $wpdb->last_error;
 
 }
