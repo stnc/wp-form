@@ -1,11 +1,4 @@
 <?php
-
-
-
-
-
-
-
 function stncForm_adminMenu_About_contents()
 {
 ?>

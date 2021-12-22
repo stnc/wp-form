@@ -1,5 +1,4 @@
 <?php
-
 // define the actions for the two hooks created, first for logged in users and the next for logged out users
 add_action("wp_ajax_stncFormSent", "stncFormSent");
 add_action("wp_ajax_nopriv_stncFormSent", "stncFormSent");

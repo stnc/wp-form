@@ -1,5 +1,4 @@
 <?php
-
 // register our form css
 function stncForm_register_js()
 {

@@ -617,5 +617,3 @@ function tt_render_list_page()
 }
 
 
-
-
