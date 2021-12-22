@@ -318,3 +318,8 @@ select {
 #stncForm_VideUploadForm {
     background-color: #fff;
 }
+
+.dropzone-remove-all,
+.dropzone-upload {
+    display: none!important;
+}

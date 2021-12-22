@@ -121,6 +121,8 @@ function stncForm_VideUploadForm()
 */
   $output = stncForm_VideUploadForm_fields();
   return $output;
+
+
 }
 add_shortcode('StncForm_videoYukle', 'stncForm_VideUploadForm');
 // [StncForm_videoYukle] --- kullanım örneği

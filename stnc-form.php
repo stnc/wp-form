@@ -51,5 +51,16 @@ require_once("functions/stncForm-registers.php");
 require_once("stncForm-frontUploader.php");
 require_once("stncForm-frontDropzone.php");
 
+//diğer ornekelr
+// require_once("dropzonejs-wp-rest-api.php");
+// require_once("sadeUpload.php");
 
 
+
+/*
+diğerlerini short codelar 
+
+  upload için Add the shortcode '[wpcfu_form]' --sade
+// [StncForm_videoYukle] --- kullanım örneği  --- benım 
+[dropzonerest] api ile calısanın 
+*/

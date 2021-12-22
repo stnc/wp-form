@@ -41,8 +41,8 @@ function stncForm_VideUploadForm_fields()
 
     <div class="container">
       <div class="row">
-        <div class="col-md-12 stncVolunteer">
-          <div id="templateBody" class="bodyContent">
+        <div class="col-md-12">
+          <div class="bodyContent">
             <div class="box box-primary">
               <!-- /.box-header -->
               <!-- form start -->
@@ -96,87 +96,59 @@ function stncForm_VideUploadForm_fields()
                     </li> -->
                 </ul>
 
-                <div id="upload-group" class="alert alert-danger" style="display: none;" role="alert"></div>
-
-                <div style="    border: 2px dashed #0087F7;" class="dropzone needsclick dz-clickable">
-                  <div class="dz-message needsclick">
-
-
-
-                    <div class="alert alert-warning" role="alert"><button type="button" class="dz-button">
-                        Videoları sürükle bırak ile bu alana atınız veya dosya ekle butonunu kullanınız, <br> maksimum dosya boyutu 100 MB dan büyük olamaz</button></div>
-
-                    <br>
 
 
 
 
-                    <div id="actions" class="row">
-
-                      <div class="col-lg-7">
-                        <span class=" btn btn-success text-white  fileinput-button">
-
-                          <span>Dosya Ekle...</span>
-                        </span>
-
-
-                        <a class="btn btn-primary text-white start" style="display: none!important">
-                          &nbsp;Yüklemeyi başlat
-                        </a>
-                        <!-- <a class="btn btn-warning   cancel">
-                       
-                            <span>Yüklemeyi İptal Et</span>
-                          </a> -->
-                      </div>
-
-                      <div class="col-lg-5">
-                        <!-- The global file processing state -->
-                        <span class="fileupload-process">
-                          <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                          </div>
-                        </span>
-                      </div>
-
-                      <div class="table-upload table table-striped files" id="previews">
-
-                        <div id="template" class="file-row">
-                          <!-- This is used as the file preview template -->
-                          <div>
-                            <span class="preview"><img data-dz-thumbnail /></span>
-                          </div>
-                          <div>
-                            <p class="name" data-dz-name></p>
-                            <strong class="error text-danger" data-dz-errormessage></strong>
-                          </div>
-                          <div>
-                            <p class="size" data-dz-size></p>
-                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                            </div>
-                          </div>
-                          <div>
-
-                            <a style="display: none;" class="btn btn-primary text-white start">
-                              Başlat
-                            </a>
-                            <!--  <a data-dz-remove class="btn btn-danger text-white  cancel">
-                                <i class="glyphicon glyphicon-ban-circle"></i>
-                                <span>İptal</span>
-                              </a> -->
-                            <!-- <a data-dz-remove class="btn btn-danger delete">
-                          <i class="glyphicon glyphicon-trash"></i>
-                          <span>Sil</span>
-                        </a> -->
-                          </div>
+                <!--begin::Dropzone-->
+                <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs_example_2">
+                  <!--begin::Controls-->
+                  <div class="dropzone-panel mb-lg-0 mb-2">
+                    <a class="dropzone-select btn btn-sm btn-warning me-2">Dosya Ekle</a>
+                    <a style="display: none!important;" class="dropzone-upload btn btn-sm btn-light-primary me-2">Upload All</a>
+                    <a style="display: none!important;" class="dropzone-remove-all btn btn-sm btn-light-primary">Remove All</a>
+                  </div>
+                  <!--end::Controls-->
+                  <!--begin::Items-->
+                  <div class="dropzone-items wm-200px">
+                    <div class="dropzone-item" style="display:none">
+                      <!--begin::File-->
+                      <div class="dropzone-file">
+                        <div class="dropzone-filename" title="some_image_file_name.jpg">
+                          <span data-dz-name="">some_image_file_name.jpg</span>
+                          <strong>(
+                            <span data-dz-size="">340kb</span>)</strong>
                         </div>
-
+                        <div class="dropzone-error" data-dz-errormessage=""></div>
                       </div>
-
-
+                      <!--end::File-->
+                      <!--begin::Progress-->
+                      <div class="dropzone-progress">
+                        <div class="progress">
+                          <div class="progress-bar bg-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dz-uploadprogress=""></div>
+                        </div>
+                      </div>
+                      <!--end::Progress-->
+                      <!--begin::Toolbar-->
+                      <div class="dropzone-toolbar">
+                        <span class="dropzone-start">
+                          <i class="bi bi-play-fill fs-3"></i>
+                        </span>
+                        <span class="dropzone-cancel" data-dz-remove="" style="display: none;">
+                          <i class="bi bi-x fs-3"></i>
+                        </span>
+                        <span class="dropzone-delete" data-dz-remove="">
+                          <i class="bi bi-x fs-1"></i>
+                        </span>
+                      </div>
+                      <!--end::Toolbar-->
                     </div>
                   </div>
+                  <!--end::Items-->
                 </div>
+                <!--end::Dropzone-->
+
+                <!--end::Form-->
 
 
 
@@ -213,29 +185,33 @@ function stncForm_VideUploadForm_fields()
     <script>
       Dropzone.autoDiscover = false;
 
-      // Get the template HTML and remove it from the doument
-      var previewNode = document.querySelector("#template");
+      const id = "#kt_dropzonejs_example_2";
+      const dropzone = document.querySelector(id);
+
+      // set the preview element template
+      var previewNode = dropzone.querySelector(".dropzone-item");
       previewNode.id = "";
       var previewTemplate = previewNode.parentNode.innerHTML;
       previewNode.parentNode.removeChild(previewNode);
 
-      var myDropzone = new Dropzone("#stncForm_VideUploadForm", { // Make the whole body a dropzone
+      var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
         url: myAjax.ajaxurl,
         addRemoveLinks: true,
-        maxFiles: 1, //https://www.infinetsoft.com/Post/How-to-set-limits-for-file-upload-in-dropzone-js/2534#.YIvbS2YzbJ9
-        maxFilesize: 80, //max file size in MB,
+
         acceptedFiles: "video/mp4,video/webm,	application/pdf,	application/vnd.ms-powerpoint,	application/vnd.openxmlformats-officedocument.presentationml.presentation",
         thumbnailWidth: 80,
         thumbnailHeight: 80,
         parallelUploads: 1,
         previewTemplate: previewTemplate,
         autoProcessQueue: true,
-        // chunking:true,
-        // chunkSize:50000000,
-        uploadMultiple:false,
+        //acceptedFiles: "image/*", // all image mime types
+        acceptedFiles: ".mp4", // only .jpg files
+        maxFiles: 1,
+        uploadMultiple: false,
+        maxFilesize: 100, // 5 MB
         autoQueue: false, // Make sure the files aren't queued until manually added
-        previewsContainer: "#previews", // Define the container to display the previews
-        clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
+        previewsContainer: id + " .dropzone-items", // Define the container to display the previews
+        clickable: id + " .dropzone-select", // Define the element that should be used as click trigger to select files.
         init: function() {
           this.on("sending", function(file, xhr, formData) {
 
@@ -267,12 +243,19 @@ function stncForm_VideUploadForm_fields()
 
       });
 
+
       myDropzone.on("addedfile", function(file) {
-        // Hookup the start button       
-        jQuery("#mediaIsExist").val("1");
-        file.previewElement.querySelector(".start").onclick = function() {
+        // Hookup the start button
+        file.previewElement.querySelector(id + " .dropzone-start").onclick = function() {
           myDropzone.enqueueFile(file);
         };
+        const dropzoneItems = dropzone.querySelectorAll('.dropzone-item');
+        dropzoneItems.forEach(dropzoneItem => {
+          dropzoneItem.style.display = '';
+        });
+        jQuery("#mediaIsExist").val("1");
+        dropzone.querySelector('.dropzone-upload').style.display = "inline-block";
+        dropzone.querySelector('.dropzone-remove-all').style.display = "inline-block";
       });
 
       myDropzone.on("complete", function(file) {
@@ -284,29 +267,66 @@ function stncForm_VideUploadForm_fields()
 
       // Update the total progress bar
       myDropzone.on("totaluploadprogress", function(progress) {
-        document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+        const progressBars = dropzone.querySelectorAll('.progress-bar');
+        progressBars.forEach(progressBar => {
+          progressBar.style.width = progress + "%";
+        });
       });
 
       myDropzone.on("sending", function(file) {
         // Show the total progress bar when upload starts
-        document.querySelector("#total-progress").style.opacity = "1";
+        const progressBars = dropzone.querySelectorAll('.progress-bar');
+        progressBars.forEach(progressBar => {
+          progressBar.style.opacity = "1";
+        });
         // And disable the start button
-        file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
-
+        file.previewElement.querySelector(id + " .dropzone-start").setAttribute("disabled", "disabled");
       });
 
       // Hide the total progress bar when nothing's uploading anymore
-      myDropzone.on("queuecomplete", function(progress) {
+      myDropzone.on("complete", function(progress) {
+        const progressBars = dropzone.querySelectorAll('.dz-complete');
 
-        document.querySelector("#total-progress").style.opacity = "0";
+        setTimeout(function() {
+          progressBars.forEach(progressBar => {
+            progressBar.querySelector('.progress-bar').style.opacity = "0";
+            progressBar.querySelector('.progress').style.opacity = "0";
+            progressBar.querySelector('.dropzone-start').style.opacity = "0";
+          });
+        }, 300);
       });
 
       // Setup the buttons for all transfers
       // The "add files" button doesn't need to be setup because the config
       // `clickable` has already been specified.
-      document.querySelector("#actions .start").onclick = function() {
+      // Setup the buttons for all transfers
+      dropzone.querySelector(".dropzone-upload").addEventListener('click', function() {
         myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-      };
+      });
+
+
+      // Setup the button for remove all files
+      dropzone.querySelector(".dropzone-remove-all").addEventListener('click', function() {
+        dropzone.querySelector('.dropzone-upload').style.display = "none";
+        dropzone.querySelector('.dropzone-remove-all').style.display = "none";
+        myDropzone.removeAllFiles(true);
+      });
+
+      // On all files completed upload
+      myDropzone.on("queuecomplete", function(progress) {
+        const uploadIcons = dropzone.querySelectorAll('.dropzone-upload');
+        uploadIcons.forEach(uploadIcon => {
+          uploadIcon.style.display = "none";
+        });
+      });
+
+      // On all files removed
+      myDropzone.on("removedfile", function(file) {
+        if (myDropzone.files.length < 1) {
+          dropzone.querySelector('.dropzone-upload').style.display = "none";
+          dropzone.querySelector('.dropzone-remove-all').style.display = "none";
+        }
+      });
 
       jQuery(function($) {
         jQuery('#stncfooter .stnc-start').on('click', function(e) {
@@ -326,10 +346,10 @@ function stncForm_VideUploadForm_fields()
             travel_ban: jQuery("#travel_ban").val(),
             stncForm_register_nonce: jQuery("#stncForm_register_nonce").val(),
             stncForm_user_login: jQuery("#stncForm_user_login").val(),
-      
+
           };
 
-   
+
 
           jQuery.ajax({
               type: "POST",
