@@ -28,7 +28,9 @@ add_action('wp_enqueue_scripts', 'stncForm_register_js');
 // load css into the website's front-end
 function stncForm_enqueue_style()
 {
+    if ((isset($_GET['page'])) && ($_GET['page'] === 'stncTekForm')) {
     wp_enqueue_style('stnc-style', plugins_url('../assets/css/stnc.css', __FILE__));
+    }
 }
 add_action('admin_enqueue_scripts', 'stncForm_enqueue_style');
 
