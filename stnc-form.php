@@ -40,6 +40,9 @@ function adjust_the_wp_menu() {
   $page = remove_submenu_page( 'index.php', 'my-sites.php' );
 }
 add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );
+
+
+// astra nın starter arayuzu,wpform lite ve polylang 
 //collabse yapsın 
 
 // jQuery(document).ready(function() {
