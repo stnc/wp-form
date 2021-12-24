@@ -42,7 +42,8 @@ function adjust_the_wp_menu() {
 add_action( 'admin_menu', 'adjust_the_wp_menu', 999 );
 
 
-// astra nın starter arayuzu,wpform lite ve polylang 
+// astra nın starter arayuzu,wpform lite ve polylang wp mail eklentisinde var 
+//http://teknoyeni.test/wp-admin/admin.php?page=wp-mail-smtp-setup-wizard#/
 //collabse yapsın 
 
 // jQuery(document).ready(function() {
