@@ -366,7 +366,13 @@ class TT_Example_List_Table extends WP_List_Table
 
 
 		//https://stackoverflow.com/questions/63659504/how-to-get-attachment-id-of-a-file-uploaded-in-wordpress-post
-			   $oynat= wp_get_attachment_url( $data -> media_id );
+if ($data -> media_id!=0){
+	$oynat= wp_get_attachment_url( $data -> media_id );
+	$oynat.= '<a href="'.$oynat.'">AÇ</a>';
+} else {
+	$oynat= " Eklenmiş Dosya Bulunmuyor";
+}
+			 
 
 			//echo  do_shortcode('[evp_embed_video url="'.   $oynat.'"  autoplay="true" width="640" template="mediaelement" preload="auto" ]');
 
@@ -390,7 +396,7 @@ class TT_Example_List_Table extends WP_List_Table
 						<hr>
 						<div><mark class="dont">Seyahat Engeli:</mark> <?php echo $data->travel_ban;?></div>
 						<hr>
-						<div><mark class="dont">Eklenen Dosya:</mark> <a href="<?php echo $oynat;?>">AÇ</a></div>
+						<div><mark class="dont">Eklenen Dosya:</mark><?php echo $oynat?></div>
 					</div>
 				</div>
 			</div>

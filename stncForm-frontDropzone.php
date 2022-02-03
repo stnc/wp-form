@@ -9,9 +9,9 @@ function stncFormSent()
 {
 
   // nonce check for an extra layer of security, the function will exit if it fails
-  if (!wp_verify_nonce($_REQUEST['nonce'], "stncFormSent_nonce")) {
-    exit("Woof Woof Woof");
-  }
+  // if (!wp_verify_nonce($_REQUEST['nonce'], "stncFormSent_nonce")) {
+  //   exit("Woof Woof Woof");
+  // }
 
   $errors = [];
   $data = [];

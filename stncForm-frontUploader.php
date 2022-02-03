@@ -21,6 +21,7 @@ function stncForm_VideUploadForm_fields()
   $phone        = isset($_POST["phone"]) ? sanitize_text_field($_POST["phone"]) : "";
   $mailAdress        = isset($_POST["mailAdress"]) ? sanitize_text_field($_POST["mailAdress"]) : "";
   $webSite        = isset($_POST["webSite"]) ? sanitize_text_field($_POST["webSite"]) : "";
+  $mediaIsExist        = isset($_POST["mediaIsExist"]) ? sanitize_text_field($_POST["mediaIsExist"]) : "";
 
 
 
@@ -49,7 +50,7 @@ function stncForm_VideUploadForm_fields()
 
               <!-- <form role="form" method="POST" enctype="multipart/form-data" action="<?php the_permalink(); ?>" id="stncForm_VideUploadForm"> -->
               <div class="box-body" id="stncForm_VideUploadForm">
-                <div class="form-style-2-heading">Erciyes Teknopark Kayıt Formu</div>
+                <div class="form-style-2-heading">Summit Erciyes Girişimci Başvuru Formu</div>
 
                 <ul class="form-style-1">
 
@@ -74,20 +75,16 @@ function stncForm_VideUploadForm_fields()
                   </li>
 
                   <li id="webSite-group" class="form-group">
-                    <label>Web Sitesi </label>
+
+                    <label>Web Sitesi <span class="required">*</span></label>
                     <input type="text" name="webSite" id="webSite" value="<?php echo $webSite ?>" class="field-long" />
                   </li>
 
-                  <li>
-                    <label>Kayseri'ye seyahat etmenize neden olacak herhangi bir engel var mıdır?</label>
-                    <select name="travel_ban" id="travel_ban" class="field-select">
-                      <option value="evet">evet</option>
-                      <option value="hayir">hayır</option>
 
-                    </select>
-                  </li>
+                  <li id="mediaIsExist-group" class="form-group">
 
 
+</li>
 
                   <br>
 
@@ -99,7 +96,8 @@ function stncForm_VideUploadForm_fields()
 
 
 
-
+                <strong>Ön değerlendirme işlemi için sunum ya da video yükleyebilirsiniz.</strong>
+                <div class="invalid-feedback-stnc" style="display: none;color:red">Lütfen Dosya Yükleyiniz</div>
                 <!--begin::Dropzone-->
                 <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs_example_2">
                   <!--begin::Controls-->
@@ -164,7 +162,7 @@ function stncForm_VideUploadForm_fields()
                   <input type="hidden" name="stncForm_user_login" id="stncForm_user_login" value="<?php echo wp_create_nonce('stncForm-register-nonce'); ?>" />
                   <!-- <button type="submit" class="btn btn-primary"><?php _e('Gönder'); ?></button> -->
                   <a id="ders" class="btn btn-primary text-white stnc-start">
-                    &nbsp;Yüklemeyi başlat
+                    &nbsp;Yüklemeyi başlat ve Gönder
                   </a>
                 </div>
                 <!-- </form> -->
@@ -205,7 +203,7 @@ function stncForm_VideUploadForm_fields()
         previewTemplate: previewTemplate,
         autoProcessQueue: true,
         //acceptedFiles: "image/*", // all image mime types
-        acceptedFiles: ".mp4", // only .jpg files
+      //  acceptedFiles: ".mp4", // only .jpg files
         maxFiles: 1,
         uploadMultiple: false,
         maxFilesize: 100, // 5 MB
@@ -222,6 +220,7 @@ function stncForm_VideUploadForm_fields()
           });
 
         },
+
         success: function(file, data) {
           console.log(data)
           var res = JSON.parse(data);
@@ -337,13 +336,19 @@ function stncForm_VideUploadForm_fields()
           jQuery(".form-group").removeClass("is-invalid");
           jQuery(".invalid-feedback").remove();
 
+
+
+
+
+
+
           var formData = {
             nameLastname: jQuery("#nameLastname").val(),
             companyName: jQuery("#companyName").val(),
             phone: jQuery("#phone").val(),
             mailAdress: jQuery("#mailAdress").val(),
             webSite: jQuery("#webSite").val(),
-            travel_ban: jQuery("#travel_ban").val(),
+            mediaIsExist: jQuery("#mediaIsExist").val(),
             stncForm_register_nonce: jQuery("#stncForm_register_nonce").val(),
             stncForm_user_login: jQuery("#stncForm_user_login").val(),
 
@@ -392,6 +397,20 @@ function stncForm_VideUploadForm_fields()
                   );
                 }
 
+                if (data.errors.webSite) {
+
+                  jQuery("#webSite-group").addClass("is-invalid");
+                  jQuery("#webSite-group").append(
+                    '<div class="invalid-feedback">' + data.errors.webSite + "</div>"
+                  );
+                }
+
+               if (data.errors.mediaIsExist) {
+                jQuery("#mediaIsExist-group").addClass("is-invalid");
+                jQuery("#mediaIsExist-group").append(
+                  '<div class="invalid-feedback">' + data.errors.mediaIsExist + "</div>"
+                );
+                }
 
 
 
@@ -463,7 +482,7 @@ function stncForm_add_new_member()
     $phone        = isset($_POST["phone"]) ? sanitize_text_field($_POST["phone"]) : "";
     $mailAdress        = isset($_POST["mailAdress"]) ? sanitize_text_field($_POST["mailAdress"]) : "";
     $webSite        = isset($_POST["webSite"]) ? sanitize_text_field($_POST["webSite"]) : "";
-    $travel_ban        = isset($_POST["travel_ban"]) ? sanitize_text_field($_POST["travel_ban"]) : "";
+    $mediaIsExist        = isset($_POST["mediaIsExist"]) ? sanitize_text_field($_POST["mediaIsExist"]) : "";
 
 
     if (empty($nameLastname)) {
@@ -481,14 +500,18 @@ function stncForm_add_new_member()
       $errors['mailAdress'] = 'Lütfen mail adresinizi giriniz';
     }
 
+    if (empty($mediaIsExist)) {
+      $errors['mediaIsExist'] = 'Lütfen dosya yükleyiniz';
+    }
+
     if (!is_email($mailAdress)) {
       $errors['mailAdress'] = 'Lütfen doğru bir mail adresi giriniz';
     }
 
 
-    // if (empty($webSite)) {
-    //   $errors['webSite'] = 'Lütfen web site adresinizi giriniz';
-    // }
+    if (empty($webSite)) {
+      $errors['webSite'] = 'Lütfen web site adresinizi giriniz';
+    }
 
 
     if (!empty($errors)) {
@@ -509,7 +532,7 @@ function stncForm_add_new_member()
         'web_site' => $webSite,
         'phone' => $phone,
         'comment' => " ",
-        'travel_ban' => $travel_ban,
+        'travel_ban' => "0",
         'media_id' => 0,
         'user_ip' => stnc_GetIP(),
         'add_date' => current_time('mysql', 1),
