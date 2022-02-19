@@ -203,7 +203,7 @@ function stncForm_VideUploadForm_fields()
         previewTemplate: previewTemplate,
         autoProcessQueue: true,
         //acceptedFiles: "image/*", // all image mime types
-      //  acceptedFiles: ".mp4", // only .jpg files
+        //acceptedFiles: ".mp4", // only .jpg files
         maxFiles: 1,
         uploadMultiple: false,
         maxFilesize: 100, // 5 MB
